@@ -34,20 +34,6 @@ STP
 IEEE Table
 ==================================
 
-<table>
-<thead>
-<tr>
-<th>Name</th><th>IEEE</th>
-</tr>
-</thead>
-<tbody>
-<tr><td>STP</td><td>IEEE 802.1d</td></tr>
-<tr><td>RSTP</td><td>IEEE 802.1w</td></tr>
-<tr><td>MST</td><td>IEEE 802.1s</td></tr>
-<tr><td>LACP(Link Aggregation Control Protocol)</td><td>IEEE 802.3ad</td></tr>
-</tbody>
-</table>
-
 +-------------------------------------------+----------------------+
 | Name                                      | IEEE                 |
 +===========================================+======================+

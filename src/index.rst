@@ -10,6 +10,7 @@ PG1X Documents
    :maxdepth: 2
    :caption: Contents:
 
+   cheat-sheets/index
    tech/network/cisco/index
    tech/sphinx
 
