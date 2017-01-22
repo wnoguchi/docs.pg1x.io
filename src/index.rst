@@ -18,6 +18,10 @@ PG1X Documents
    products/index
    hobby/voice-actress/index
 
+You can find source from:
+
+https://github.com/wnoguchi/docs.pg1x.io
+
 Indices and tables
 ==================
 
