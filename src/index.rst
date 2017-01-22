@@ -14,7 +14,7 @@ PG1X Documents
    cheat-sheets/index
    tech/network/cisco/index
    tech/sphinx
-   personal/index
+   personal/profile/index
    products/index
    hobby/voice-actress/index
 
