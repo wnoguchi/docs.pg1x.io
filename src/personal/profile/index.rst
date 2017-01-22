@@ -9,17 +9,8 @@ Status
 
 .. raw:: html
 
-   <img src="https://img.shields.io/badge/girlfriend-absent-red.svg" />
-
-.. raw:: html
-
-   <img src="https://img.shields.io/badge/liver-caution-orange.svg" />
-
-::
-
-   <img src="https://img.shields.io/badge/girlfriend-absent-red.svg" />
-   
-   <img src="https://img.shields.io/badge/liver-caution-orange.svg" />
+   <p><img src="https://img.shields.io/badge/girlfriend-absent-red.svg" /></p>
+   <p><img src="https://img.shields.io/badge/liver-caution-orange.svg" /></p>
 
 =====================================
 Licences
@@ -54,7 +45,9 @@ Prohibited
 
 #. Any Alcohol
 
-<h3 id="favoritefood">Favorite Food</h3>
+=======================================
+Favorite Food
+=======================================
 
 #. ホルモン
 #. 牡蠣
