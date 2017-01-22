@@ -10,9 +10,13 @@ PG1X Documents
    :maxdepth: 2
    :caption: Contents:
 
+   chirashi/index
    cheat-sheets/index
    tech/network/cisco/index
    tech/sphinx
+   personal/index
+   products/index
+   hobby/voice-actress/index
 
 Indices and tables
 ==================
