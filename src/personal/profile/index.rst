@@ -1,0 +1,72 @@
+Profile: Wataru NOGUCHI
+===========================================
+
+💪('ω'💪)
+
+==========================
+Status
+==========================
+
+.. raw:: html
+
+   <img src="https://img.shields.io/badge/girlfriend-absent-red.svg" />
+
+.. raw:: html
+
+   <img src="https://img.shields.io/badge/liver-caution-orange.svg" />
+
+::
+
+   <img src="https://img.shields.io/badge/girlfriend-absent-red.svg" />
+   
+   <img src="https://img.shields.io/badge/liver-caution-orange.svg" />
+
+=====================================
+Licences
+=====================================
+
+#. CCENT
+#. 応用情報技術者
+#. 基本情報技術者
+#. 普通運転免許 優良
+
+=================================
+Dream
+=================================
+
+#. 自社でデータセンターを持つこと
+#. 宇宙レベルでネットワークを構築してみたい。地球と火星や木星とかの惑星間で衛生を中継してつながるってカッコよくないですか？新たな BGP を超えた EGP ができるんだろうな(IRP: InterPlaNetary Routing Protocol)
+
+  * `惑星間インターネット - Wikipedia <https://ja.wikipedia.org/wiki/%E6%83%91%E6%98%9F%E9%96%93%E3%82%A4%E3%83%B3%E3%82%BF%E3%83%BC%E3%83%8D%E3%83%83%E3%83%88>`_
+
+#. お金持ちになること
+
+=====================================
+Hobby
+=====================================
+
+#. Study Networking.
+#. https になってるサイトの SSL 証明書を見ること
+
+=======================================
+Prohibited
+=======================================
+
+#. Any Alcohol
+
+<h3 id="favoritefood">Favorite Food</h3>
+
+#. ホルモン
+#. 牡蠣
+#. いくら
+#. カニ
+#. 納豆
+#. そば
+#. うどん
+#. ラーメン
+#. カレー
+#. ピザ
+#. 豆腐
+#. パスタ
+#. きゅうり
+#. キムチ
