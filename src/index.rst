@@ -12,8 +12,7 @@ PG1X Documents
 
    chirashi/index
    cheat-sheets/index
-   tech/network/cisco/index
-   tech/sphinx
+   tech/index
    personal/profile/index
    products/index
    hobby/voice-actress/index
