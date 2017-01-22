@@ -1,0 +1,58 @@
+CCNA v3.0 Cheat Sheet
+====================================
+
+.. contents:: TOC
+
+=============================
+ICND2
+=============================
+
+STP
+-----------------------------------
+
+::
+
+   spanning-tree vlan vlan-id root {primary | secondary}
+
+::
+
+   spanning-tree vlan 10 root primary
+   
+   24576 = 0b 0110 0000 0000 0000
+
+::
+
+   spanning-tree vlan 10 root secondary
+   
+   28672 = 0b 0111 0000 0000 0000
+
+デフォルトのプライオリティ::
+
+   32768 = 0b 1000 0000 0000 0000
+
+==================================
+IEEE Table
+==================================
+
+<table>
+<thead>
+<tr>
+<th>Name</th><th>IEEE</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>STP</td><td>IEEE 802.1d</td></tr>
+<tr><td>RSTP</td><td>IEEE 802.1w</td></tr>
+<tr><td>MST</td><td>IEEE 802.1s</td></tr>
+<tr><td>LACP(Link Aggregation Control Protocol)</td><td>IEEE 802.3ad</td></tr>
+</tbody>
+</table>
+
+===============
+Misc
+===============
+
+回線スピード
+------------------------------------------------
+
+T1: 1.544Mbps(1544Kbps)
