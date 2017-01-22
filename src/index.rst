@@ -7,7 +7,7 @@ PG1X Documents
 ========================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
 
    chirashi/index
