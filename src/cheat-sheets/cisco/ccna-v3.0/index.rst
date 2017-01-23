@@ -60,3 +60,11 @@ Misc
 +----------------------------------+----------------------+
 | T3                               | 44.736Mbps           |
 +----------------------------------+----------------------+
+
+用語
+-----------
+
+* Application Policy Infrastructure Controller(APIC)
+* APIC-EM (Application Policy Infrastructure Controller Enterprise Module)
+* Cisco ACI (Application Centric Infrastructure)
+* DSLAM（Digital Subscriber Line Access Multiplexer）
