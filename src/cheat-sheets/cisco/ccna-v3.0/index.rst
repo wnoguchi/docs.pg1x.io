@@ -69,3 +69,12 @@ Misc
 * Cisco ACI (Application Centric Infrastructure)
 * DSLAM（Digital Subscriber Line Access Multiplexer）
 * SPAN (Switched Port Analyzer)
+
+KB
+--------
+
+デフォルトルート
+^^^^^^^^^^^^^^^^^^^^^
+
+ルータに設定するのは「デフォルトゲートウェイ」では無い
+ルータに設定するのは基本的に「デフォルトルート」。
