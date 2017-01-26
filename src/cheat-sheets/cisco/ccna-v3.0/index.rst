@@ -70,6 +70,12 @@ Misc
 * DSLAM（Digital Subscriber Line Access Multiplexer）
 * SPAN (Switched Port Analyzer)
 
+ルーターの名称でよく使われる略称
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+* HQ (Headquarters) Office 本社のこと
+* BO (Branch Office)
+
 KB
 --------
 
