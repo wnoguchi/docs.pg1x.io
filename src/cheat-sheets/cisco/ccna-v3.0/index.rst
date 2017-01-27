@@ -75,6 +75,8 @@ Misc
 
 * HQ (Headquarters) Office 本社のこと
 * BO (Branch Office)
+* CE (Customer Edge Router)
+* PE (Provider Edge Router)
 
 KB
 --------
