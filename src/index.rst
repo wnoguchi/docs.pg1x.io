@@ -16,6 +16,7 @@ PG1X Documents
    personal/profile/index
    products/index
    hobby/voice-actress/index
+   ditctionary/index
 
 You can find source from:
 
