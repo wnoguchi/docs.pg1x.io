@@ -8,3 +8,4 @@ Catalyst Switch
    stp/index
    change-baud-rate
    misc
+   etherchannel/

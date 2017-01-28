@@ -7,6 +7,6 @@ Cisco Systems
    
    switch/index
    qos/
-   index
+   cisco-initial-setup
 
 * `Cisco - pg1x wiki <https://wiki.pg1x.io/index.php?title=Cisco>`_
