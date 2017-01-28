@@ -6,7 +6,7 @@ Cisco Systems
    :caption: Contents:
    
    switch/index
-   qos/
+   qos/index
    cisco-initial-setup
 
 * `Cisco - pg1x wiki <https://wiki.pg1x.io/index.php?title=Cisco>`_

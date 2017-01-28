@@ -8,4 +8,4 @@ Technologies
    pg/index
    network/cisco/index
    sphinx
-   server/virtualization/openstack/newton/
+   server/virtualization/openstack/newton/index
