@@ -1,7 +1,28 @@
 CCNA v3.0 Cheat Sheet
 ====================================
 
+**ABSOLUTELY NO WARRANTY!!**
+
 .. contents:: TOC
+
+========================
+チラ裏
+========================
+
+.. csv-table:: 
+
+   COM4, R1
+   COM5, R2
+   COM10, R3
+
+===================================
+IEEE 規格と RFC 規格の違い
+===================================
+
+IEEE 規格
+  物理レイヤー L1, L2 での規格に関するもの。
+RFC 規格
+  L3 以上の規格が規定される。
 
 =============================
 ICND2
@@ -69,6 +90,8 @@ Misc
 * Cisco ACI (Application Centric Infrastructure)
 * DSLAM（Digital Subscriber Line Access Multiplexer）
 * SPAN (Switched Port Analyzer)
+* Flexible NetFlow ネットワークの解析
+* LLQ (Low-Latency Queueing)
 
 ルーターの名称でよく使われる略称
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -92,6 +115,16 @@ KB
 
 ループバックインタフェースはデフォルトでアクティブなので ``no shutdown`` は不要。
 
+QoS で制御できるもの
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+* ジッタ(Jitter)
+* 遅延(Delay)
+* 損失(Loss)
+* 帯域幅(Bandwidth)
+
+なお、 *負荷* については制御できない。
+
 HSRP
 ----------------
 
@@ -100,3 +133,10 @@ HSRP
 #. Listen
 #. Standby
 #. Active
+
+======================
+要復習
+======================
+
+* QoS DSCP
+* GRE トンネル
