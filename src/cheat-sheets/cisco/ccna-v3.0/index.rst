@@ -172,6 +172,7 @@ HSRP
 #. Initial
 #. Learn
 #. Listen
+#. Speak
 #. Standby
 #. Active
 
