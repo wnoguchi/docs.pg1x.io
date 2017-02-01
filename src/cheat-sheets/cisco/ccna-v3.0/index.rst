@@ -169,5 +169,6 @@ HSRP
 要復習
 ======================
 
-* QoS DSCP
+* QoS DSCP 6bit IP in TOS (Type of Service)
 * GRE トンネル
+* CoS (Class of Service) 3bit Ethernet
