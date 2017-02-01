@@ -18,6 +18,7 @@ CCNA v3.0 Cheat Sheet
 #. ネットワークアドレスの計算はネットワークの重複に気をつけよ
 #. auto-summary はネットワークアドレスを集約してアドバタイズするので Loopback アドレスの /32 ビットルートが載らないことがある
 #. 不連続サブネットでは自動集約を有効にすると通信できない（ ルーティングテーブルにないものは Null0 インタフェースに送られパケットが破棄される ）
+#. DR, BDR にかかわらず OSPF ルーターはルーティングテーブルをエリア内すべてのルーティングテーブルを保持する
 
 ===================================
 IEEE 規格と RFC 規格の違い
@@ -183,3 +184,5 @@ HSRP
 * QoS DSCP 6bit IP in TOS (Type of Service)
 * GRE トンネル
 * CoS (Class of Service) 3bit Ethernet
+* MPLS (Multi-Protocol Label Switching)
+* IP SLA
