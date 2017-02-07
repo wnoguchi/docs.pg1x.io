@@ -19,6 +19,7 @@ CCNA v3.0 Cheat Sheet
 #. auto-summary はネットワークアドレスを集約してアドバタイズするので Loopback アドレスの /32 ビットルートが載らないことがある
 #. 不連続サブネットでは自動集約を有効にすると通信できない（ ルーティングテーブルにないものは Null0 インタフェースに送られパケットが破棄される ）
 #. DR, BDR にかかわらず OSPF ルーターはルーティングテーブルをエリア内すべてのルーティングテーブルを保持する
+#. RSTP には Listening 状態はない
 
 ===================================
 IEEE 規格と RFC 規格の違い
@@ -186,3 +187,36 @@ HSRP
 * CoS (Class of Service) 3bit Ethernet
 * MPLS (Multi-Protocol Label Switching)
 * IP SLA
+
+=====================
+Commands
+=====================
+
+デバッグメッセージの表示をタイムスタンプとする::
+
+   service timestamps debug
+
+trunk check::
+
+   show interfaces trunk
+   show interfaces status
+   show interfaces switchport
+   show vlan
+
+BGP
+----------
+
+BGPルータ ID 確認::
+
+   show ip bgp
+
+AS番号確認::
+
+   show ip bgp summary
+
+==========================================
+IP Protocol Number
+==========================================
+
+* 47 GRE
+* 6 TCP
