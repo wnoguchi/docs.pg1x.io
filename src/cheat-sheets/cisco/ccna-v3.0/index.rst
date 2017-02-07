@@ -214,6 +214,12 @@ AS番号確認::
 
    show ip bgp summary
 
+QoS
+---------------
+
+#. ToS(Type of Service) L3
+#. CoS(Class of Service) L2
+
 ==========================================
 IP Protocol Number
 ==========================================
