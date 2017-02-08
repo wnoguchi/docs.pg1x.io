@@ -49,7 +49,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'PG1X Documents'
+project = u'PG1X'
 copyright = u'2017, Wataru NOGUCHI'
 author = u'Wataru NOGUCHI'
 
