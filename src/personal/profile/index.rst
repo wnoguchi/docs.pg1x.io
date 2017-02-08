@@ -16,7 +16,11 @@ Status
 Licences
 =====================================
 
-#. CCENT
+#. Cisco Certification
+
+  #. CCNA v3.0 Routing and Switching
+  #. CCENT
+
 #. 応用情報技術者
 #. 基本情報技術者
 #. 普通運転免許 優良
@@ -37,6 +41,9 @@ Hobby
 =====================================
 
 #. Study Networking.
+#. Programming(Not Work)
+#. Sleeping.
+#. Do Nothing.
 #. https になってるサイトの SSL 証明書を見ること
 
 =======================================
@@ -65,3 +72,9 @@ Favorite Food
 #. キムチ
 #. 麻婆豆腐
 #. チャーハン
+
+==========================
+Contact
+==========================
+
+wnoguchi at pg1x.io
