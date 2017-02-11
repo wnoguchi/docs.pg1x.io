@@ -53,7 +53,7 @@ Routing and Switching
 プラン（リードオンリー）
 -----------------------------------------
 
-#. `CCNP_v2.0_R&S_学習計画 - Google スプレッドシート <https://docs.google.com/spreadsheets/d/1dhIfYZ9kJ1rb_aRtkbGTs4VZRo1KyTyYEBOqiGqrCnk/edit#gid=0>`_
+#. `CCNP_v2.0_R&S_学習計画 - Google スプレッドシート <https://docs.google.com/spreadsheets/d/1dhIfYZ9kJ1rb_aRtkbGTs4VZRo1KyTyYEBOqiGqrCnk/edit#gid=1427862754>`_
 
 ====================================================
 学習ソース
