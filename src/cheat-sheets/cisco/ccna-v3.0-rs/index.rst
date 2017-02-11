@@ -1,19 +1,17 @@
-CCNA v3.0 Cheat Sheet
+CCNA v3.0 R&S Cheat Sheet
 ====================================
 
 **ABSOLUTELY NO WARRANTY!!**
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Contents:
 
 .. contents:: TOC
 
 ========================
 チラ裏
 ========================
-
-.. csv-table:: 
-
-   COM4, R1
-   COM5, R2
-   COM10, R3
 
 #. ネットワークアドレスの計算はネットワークの重複に気をつけよ
 #. auto-summary はネットワークアドレスを集約してアドバタイズするので Loopback アドレスの /32 ビットルートが載らないことがある
