@@ -6,6 +6,10 @@ Routing and Switching
 .. toctree::
    :maxdepth: 1
    :caption: Contents:
+   
+   route
+   switch
+   tshoot
 
 .. contents:: TOC
 
