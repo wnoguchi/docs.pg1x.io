@@ -1,7 +1,7 @@
 CCNA
 =============================
 
-Cisco Certified Network Professional
+Cisco Certified Network Associate
 
 .. toctree::
    :maxdepth: 1
