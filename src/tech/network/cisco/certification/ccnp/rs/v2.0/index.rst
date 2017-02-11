@@ -65,7 +65,8 @@ Routing and Switching
 教科書
 -------------------
 
-#. `徹底攻略Cisco CCNP Routing & Switching ROUTE教科書[300-101J]対応 | 株式会社ソキウス・ジャパン |本 | 通販 | Amazon <https://www.amazon.co.jp/dp/4844339168>`_
+#. `Amazon.co.jp： 徹底攻略Cisco CCNP Routing & Switching ROUTE教科書［300-101J］対応 徹底攻略シリーズ eBook: 株式会社ソキウス・ジャパン: Kindleストア <https://www.amazon.co.jp/dp/B0179BCZG4>`_
+#. `Amazon.co.jp： 徹底攻略 Cisco CCNP Routing & Switching SWITCH教科書［300-115J］対応 徹底攻略シリーズ eBook: 株式会社ソキウス・ジャパン: Kindleストア <https://www.amazon.co.jp/dp/B00ZU5WN8C>`_
 
 
 CCNPイージス
@@ -122,10 +123,19 @@ ping-t
 問題集
 -------------------------------
 
+書籍
+^^^^^^^^^^^^^^
+
 #. `徹底攻略Cisco CCNP Routing & Switching ROUTE問題集[300-101J]対応 | 株式会社ソキウス・ジャパン |本 | 通販 | Amazon <https://www.amazon.co.jp/dp/4844380001>`_
 #. `徹底攻略 Cisco CCNP Routing & Switching SWITCH 問題集[300-115J]対応 | 株式会社ソキウス・ジャパン |本 | 通販 | Amazon <https://www.amazon.co.jp/dp/484433977X>`_
 #. `徹底攻略 Cisco CCNP Routing & Switching TSHOOT 問題集[300-135J]対応 | 株式会社ソキウス・ジャパン |本 | 通販 | Amazon <https://www.amazon.co.jp/dp/4844380532>`_
 
+Kindle
+^^^^^^^^^^^^^^^^^^
+
+#. `Amazon.co.jp： 徹底攻略Cisco CCNP Routing & Switching ROUTE問題集［300-101J］対応 徹底攻略シリーズ eBook: 株式会社ソキウス・ジャパン: Kindleストア <https://www.amazon.co.jp/dp/B01BU1H1U4>`_
+#. `Amazon.co.jp： 徹底攻略Cisco CCNP Routing & Switching SWITCH問題集［300-115J］対応 徹底攻略シリーズ eBook: 株式会社ソキウス・ジャパン: Kindleストア <https://www.amazon.co.jp/dp/B0191B5FFS>`_
+#. `Amazon.co.jp： 徹底攻略 Cisco CCNP Routing & Switching TSHOOT 問題集［300-135J］対応 徹底攻略シリーズ eBook: 株式会社ソキウス・ジャパン: Kindleストア <https://www.amazon.co.jp/dp/B01EHHJXV8>`_
 
 ==========================
 情報収集
