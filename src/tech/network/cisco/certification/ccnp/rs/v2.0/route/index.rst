@@ -4,6 +4,8 @@
 .. toctree::
    :maxdepth: 1
    :caption: Contents:
+   
+   eigrp
 
 .. contents:: TOC
 
