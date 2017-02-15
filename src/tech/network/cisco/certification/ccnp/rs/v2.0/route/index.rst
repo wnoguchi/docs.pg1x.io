@@ -6,6 +6,7 @@
    :caption: Contents:
    
    eigrp
+   ospf
 
 .. contents:: TOC
 
