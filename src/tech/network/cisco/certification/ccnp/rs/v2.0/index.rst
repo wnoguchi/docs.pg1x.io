@@ -7,9 +7,9 @@ Routing and Switching
    :maxdepth: 1
    :caption: Contents:
    
-   route
-   switch
-   tshoot
+   route/index
+   switch/index
+   tshoot/index
 
 .. contents:: TOC
 
