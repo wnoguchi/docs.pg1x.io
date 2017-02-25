@@ -272,13 +272,13 @@ A::
 
    en
    conf t
-   int fa0
+   int fa0/0
    ip addr 172.16.1.10 255.255.255.0
    no shut
-   int fa1
+   int fa0/1
    ip addr 172.16.2.10 255.255.255.0
    no shut
-   int vlan 1
+   int s0/0
    ip addr 172.16.0.10 255.255.255.0
    no shut
    int fa2
@@ -292,10 +292,10 @@ R1::
 
    en
    conf t
-   int fa0/0
+   int s2/1
    ip addr 172.16.0.1 255.255.255.0
    no shut
-   int s0/0/0
+   int fa0/0
    ip addr 10.0.12.1 255.255.255.0
    no shut
    end
