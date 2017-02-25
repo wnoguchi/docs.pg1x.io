@@ -1280,4 +1280,43 @@ R4::
    network 10.0.0.0 0.255.255.255 area 1
    end
 
+出力
+-------------------------
 
+出力がおかしい（DR の選出順序が入れ違っている）などで OSPF プロセスを再起動する場合は下記コマンドを叩く。
+
+::
+
+   clear ip ospf process
+
+R2: エリア0_内部ルータ::
+
+   R2#sh ip ospf database
+   
+               OSPF Router with ID (2.2.2.2) (Process ID 1)
+   
+                   Router Link States (Area 0)
+   
+   Link ID         ADV Router      Age         Seq#       Checksum Link count
+   1.1.1.1         1.1.1.1         811         0x80000002 0x00174D 2
+   2.2.2.2         2.2.2.2         760         0x80000002 0x00727B 4
+   3.3.3.3         3.3.3.3         761         0x80000002 0x0001CF 1
+   
+                   Net Link States (Area 0)
+   
+   Link ID         ADV Router      Age         Seq#       Checksum
+   10.0.23.3       3.3.3.3         761         0x80000001 0x007184
+   
+                   Summary Net Link States (Area 0)
+   
+   Link ID         ADV Router      Age         Seq#       Checksum
+   10.1.1.0        3.3.3.3         736         0x80000001 0x00A979
+   10.1.2.0        3.3.3.3         736         0x80000001 0x009E83
+   10.1.34.0       3.3.3.3         791         0x80000001 0x0033CF
+   
+                   Type-5 AS External Link States
+   
+   Link ID         ADV Router      Age         Seq#       Checksum Tag
+   172.16.0.0      1.1.1.1         831         0x80000001 0x00449B 0
+   172.16.1.0      1.1.1.1         825         0x80000001 0x0039A5 0
+   172.16.2.0      1.1.1.1         825         0x80000001 0x002EAF 0
