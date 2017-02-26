@@ -91,9 +91,15 @@ LOCAL GNS3 VM SETUP WIZARD
 
 .. image:: img/2017-02-25_20h49_25-setup-wizard-2.png
 
+GNS3 VM を起動しているときに出るダイアログ。
+
 .. image:: img/2017-02-25_20h50_18-launching-gns3-vm-1.png
 
+実際の VM の画面表示。
+
 .. image:: img/2017-02-25_20h50_29-launching-gns3-vm-2.png
+
+そして起動した結果。
 
 .. image:: img/2017-02-25_20h50_43-launching-gns3-vm-3.png
 
@@ -211,14 +217,13 @@ GNS3 VM の中で IOS イメージを動かすように選択する。
 
 と書いてあるので、この例は
 
-デフォルトの FastEthernet(100Mbps) のインターフェイスに加えて Ethernet(10Mbps) とシリアルインターフェイスを搭載する設定とのことである。
+デフォルトの FastEthernet(100Mbps) のインターフェイスに加えて FastEthernet(100Mbps) とシリアルインターフェイスを搭載する設定とのことである。
 
 .. image:: img/2017-02-25_23h41_18-select-more-interface.png
 
 次、前のダイアログで ``NM-4T`` が選択されていた場合は WIC（WAN インターフェイス カード） モジュールが追加可能になっているので選択する。
 とりあえずなんだかよくわからんので例のとおりに設定してみる。
-こういうとき実機ないと実感わかないよね。
-と思ったけど、まあググったら画像がわんさか出てくるからわかりやすくていい。
+ググったら画像がわんさか出てくるからわかりやすくていい。
 
 #. `WIC-1T - Google 検索 <https://www.google.co.jp/search?q=WIC-1T&client=ubuntu&hs=Fp0&channel=fs&hl=ja&biw=1920&bih=941&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjVytWrv6vSAhXKT7wKHcayAPIQ_AUIBigB>`_
 #. `WIC-2T - Google 検索 <https://www.google.co.jp/search?q=WIC-1T&client=ubuntu&hs=Fp0&channel=fs&hl=ja&biw=1920&bih=941&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjVytWrv6vSAhXKT7wKHcayAPIQ_AUIBigB#channel=fs&hl=ja&tbm=isch&q=WIC-2T&*>`_
