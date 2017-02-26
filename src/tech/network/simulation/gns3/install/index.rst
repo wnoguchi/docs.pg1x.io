@@ -303,7 +303,11 @@ ping も打ってみる。
 マルチエリアOSPFのトポロジー
 ==========================================================
 
-.. image:: img/2017-02-26_00h30_05-sample-topology.png
+ここ見とくと便利かもしれない。
+
+#. `Your first Cisco GNS3 Topology - GNS3 <https://docs.gns3.com/1d1huu6z9-wWGD_ipTSQZqy2mpaxiqzymu-YQo6at_Jg/index.html>`_
+
+.. image:: img/2017-02-26_12h19_02-sample-cisco-topology.png
 
 基本的なコンフィグ
 ---------------------------------------
