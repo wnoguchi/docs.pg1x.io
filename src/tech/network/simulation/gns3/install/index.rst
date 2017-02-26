@@ -453,4 +453,4 @@ R4::
 公式ドキュメントがとても便利になっている。
 一通り読んどくと便利にシミュレーションできるかも。
 
-#. `GNS3 documentation <https://docs.gns3.com/1FFbs5hOBbx8O855KxLetlCwlbymTN8L1zXXQzCqfmy4/index.html>`_
+#. `GNS3 documentation Explore Topics <https://docs.gns3.com/1FFbs5hOBbx8O855KxLetlCwlbymTN8L1zXXQzCqfmy4/index.html>`_

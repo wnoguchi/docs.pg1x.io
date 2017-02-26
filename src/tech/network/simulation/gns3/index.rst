@@ -39,9 +39,12 @@ Links
 一番当てになりそうなドキュメントたち。
 
 #. `GNS3 documentation <https://docs.gns3.com/>`_
+#. `GNS3 documentation Explore Topics <https://docs.gns3.com/1FFbs5hOBbx8O855KxLetlCwlbymTN8L1zXXQzCqfmy4/index.html>`_
 #. `Getting Started with GNS3 - GNS3 <https://docs.gns3.com/1PvtRW5eAb8RJZ11maEYD9_aLY8kkdhgaMB0wPCz8a38/index.html>`_
 #. `GNS3 Windows Install - GNS3 <https://docs.gns3.com/11YYG4NQlPSl31YwvVvBS9RAsOLSYv0Ocy-uG2K8ytIY/index.html>`_
 #. `GNS3 Setup Wizard - GNS3 VM - GNS3 <https://docs.gns3.com/1wdfvS-OlFfOf7HWZoSXMbG58C4pMSy7vKJFiKKVResc/index.html>`_
+#. `Your first GNS3 topology - GNS3 <https://docs.gns3.com/1wr2j2jEfX6ihyzpXzC23wQ8ymHzID4K3Hn99-qqshfg/index.html>`_
+#. `Your first Cisco GNS3 Topology - GNS3 <https://docs.gns3.com/1d1huu6z9-wWGD_ipTSQZqy2mpaxiqzymu-YQo6at_Jg/index.html>`_
 
 公式ドキュメント（古い）
 ------------------------------------------------------------------------------------------
