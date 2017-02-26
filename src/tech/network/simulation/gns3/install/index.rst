@@ -445,3 +445,12 @@ R4::
    router-id 4.4.4.4
    network 10.0.0.0 0.255.255.255 area 1
    end
+
+=====================================
+終わりに
+=====================================
+
+公式ドキュメントがとても便利になっている。
+一通り読んどくと便利にシミュレーションできるかも。
+
+#. `GNS3 documentation <https://docs.gns3.com/1FFbs5hOBbx8O855KxLetlCwlbymTN8L1zXXQzCqfmy4/index.html>`_
