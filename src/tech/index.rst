@@ -9,4 +9,5 @@ Technologies
    network/index
    server/virtualization/openstack/newton/index
    ssl_tls/index
+   software/index
    sphinx
