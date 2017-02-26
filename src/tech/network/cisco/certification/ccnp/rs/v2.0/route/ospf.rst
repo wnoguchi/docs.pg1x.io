@@ -1241,14 +1241,14 @@ R1::
    conf t
    router ospf 1
    router-id 1.1.1.1
-   ! RIP ルートを OSPF へ再配布
+   ! Redistribute RIP Route to OSPF
    redistribute rip subnets
    network 10.0.0.0 0.255.255.255 area 0
    exit
    !
    router rip
    version 2
-   ! OSPF ルートを RIP へ再配布
+   ! Redistribute OSPF Route to RIP
    redistribute ospf 1 metric 5
    network 172.16.0.0
    no auto-summary
