@@ -1320,3 +1320,141 @@ R2: エリア0_内部ルータ::
    172.16.0.0      1.1.1.1         831         0x80000001 0x00449B 0
    172.16.1.0      1.1.1.1         825         0x80000001 0x0039A5 0
    172.16.2.0      1.1.1.1         825         0x80000001 0x002EAF 0
+
+ルーティングテーブル
+-------------------------------------
+
+::
+
+   R5#sh ip route
+   Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
+          D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+          N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+          E1 - OSPF external type 1, E2 - OSPF external type 2
+          i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+          ia - IS-IS inter area, * - candidate default, U - per-user static route
+          o - ODR, P - periodic downloaded static route
+   
+   Gateway of last resort is not set
+   
+        172.16.0.0/24 is subnetted, 3 subnets
+   C       172.16.0.0 is directly connected, Vlan1
+   C       172.16.1.0 is directly connected, FastEthernet0
+   C       172.16.2.0 is directly connected, FastEthernet1
+        10.0.0.0/24 is subnetted, 6 subnets
+   R       10.0.12.0 [120/5] via 172.16.0.1, 00:00:08, Vlan1
+   R       10.1.2.0 [120/5] via 172.16.0.1, 00:00:08, Vlan1
+   R       10.1.1.0 [120/5] via 172.16.0.1, 00:00:08, Vlan1
+   R       10.0.1.0 [120/5] via 172.16.0.1, 00:00:08, Vlan1
+   R       10.0.23.0 [120/5] via 172.16.0.1, 00:00:09, Vlan1
+   R       10.1.34.0 [120/5] via 172.16.0.1, 00:00:09, Vlan1
+
+::
+
+   R1#sh ip route
+   Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+          D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+          N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+          E1 - OSPF external type 1, E2 - OSPF external type 2
+          i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+          ia - IS-IS inter area, * - candidate default, U - per-user static route
+          o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+          + - replicated route, % - next hop override
+   
+   Gateway of last resort is not set
+   
+         10.0.0.0/8 is variably subnetted, 7 subnets, 2 masks
+   O        10.0.1.0/24 [110/65] via 10.0.12.2, 07:26:53, Serial0/0/0
+   C        10.0.12.0/24 is directly connected, Serial0/0/0
+   L        10.0.12.1/32 is directly connected, Serial0/0/0
+   O        10.0.23.0/24 [110/65] via 10.0.12.2, 06:49:47, Serial0/0/0
+   O IA     10.1.1.0/24 [110/67] via 10.0.12.2, 06:49:42, Serial0/0/0
+   O IA     10.1.2.0/24 [110/67] via 10.0.12.2, 06:49:42, Serial0/0/0
+   O IA     10.1.34.0/24 [110/66] via 10.0.12.2, 06:49:42, Serial0/0/0
+         172.16.0.0/16 is variably subnetted, 4 subnets, 2 masks
+   C        172.16.0.0/24 is directly connected, FastEthernet0/0
+   L        172.16.0.1/32 is directly connected, FastEthernet0/0
+   R        172.16.1.0/24 [120/1] via 172.16.0.10, 00:00:27, FastEthernet0/0
+   R        172.16.2.0/24 [120/1] via 172.16.0.10, 00:00:27, FastEthernet0/0
+
+::
+
+   R2#sh ip route
+   Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+          D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+          N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+          E1 - OSPF external type 1, E2 - OSPF external type 2
+          i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+          ia - IS-IS inter area, * - candidate default, U - per-user static route
+          o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+          + - replicated route, % - next hop override
+   
+   Gateway of last resort is not set
+   
+         10.0.0.0/8 is variably subnetted, 9 subnets, 2 masks
+   C        10.0.1.0/24 is directly connected, FastEthernet0/1
+   L        10.0.1.2/32 is directly connected, FastEthernet0/1
+   C        10.0.12.0/24 is directly connected, Serial0/0/0
+   L        10.0.12.2/32 is directly connected, Serial0/0/0
+   C        10.0.23.0/24 is directly connected, FastEthernet0/0
+   L        10.0.23.2/32 is directly connected, FastEthernet0/0
+   O IA     10.1.1.0/24 [110/3] via 10.0.23.3, 06:49:16, FastEthernet0/0
+   O IA     10.1.2.0/24 [110/3] via 10.0.23.3, 06:49:16, FastEthernet0/0
+   O IA     10.1.34.0/24 [110/2] via 10.0.23.3, 06:49:16, FastEthernet0/0
+         172.16.0.0/24 is subnetted, 3 subnets
+   O E2     172.16.0.0 [110/20] via 10.0.12.1, 07:26:27, Serial0/0/0
+   O E2     172.16.1.0 [110/20] via 10.0.12.1, 07:26:18, Serial0/0/0
+   O E2     172.16.2.0 [110/20] via 10.0.12.1, 07:26:18, Serial0/0/0
+
+::
+
+   R3#sh ip route
+   Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+          D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+          N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+          E1 - OSPF external type 1, E2 - OSPF external type 2
+          i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+          ia - IS-IS inter area, * - candidate default, U - per-user static route
+          o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+          + - replicated route, % - next hop override
+   
+   Gateway of last resort is not set
+   
+         10.0.0.0/8 is variably subnetted, 8 subnets, 2 masks
+   O        10.0.1.0/24 [110/2] via 10.0.23.2, 06:50:21, FastEthernet0/0
+   O        10.0.12.0/24 [110/65] via 10.0.23.2, 06:50:21, FastEthernet0/0
+   C        10.0.23.0/24 is directly connected, FastEthernet0/0
+   L        10.0.23.3/32 is directly connected, FastEthernet0/0
+   O        10.1.1.0/24 [110/2] via 10.1.34.4, 06:50:21, FastEthernet0/1
+   O        10.1.2.0/24 [110/2] via 10.1.34.4, 06:50:21, FastEthernet0/1
+   C        10.1.34.0/24 is directly connected, FastEthernet0/1
+   L        10.1.34.3/32 is directly connected, FastEthernet0/1
+         172.16.0.0/24 is subnetted, 3 subnets
+   O E2     172.16.0.0 [110/20] via 10.0.23.2, 06:50:21, FastEthernet0/0
+   O E2     172.16.1.0 [110/20] via 10.0.23.2, 06:50:21, FastEthernet0/0
+   O E2     172.16.2.0 [110/20] via 10.0.23.2, 06:50:21, FastEthernet0/0
+
+::
+
+   R4#sh ip route
+   Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
+          D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+          N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+          E1 - OSPF external type 1, E2 - OSPF external type 2
+          i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+          ia - IS-IS inter area, * - candidate default, U - per-user static route
+          o - ODR, P - periodic downloaded static route
+   
+   Gateway of last resort is not set
+   
+        172.16.0.0/24 is subnetted, 3 subnets
+   O E2    172.16.0.0 [110/20] via 10.1.34.3, 06:50:28, Vlan1
+   O E2    172.16.1.0 [110/20] via 10.1.34.3, 06:50:28, Vlan1
+   O E2    172.16.2.0 [110/20] via 10.1.34.3, 06:50:28, Vlan1
+        10.0.0.0/24 is subnetted, 6 subnets
+   O IA    10.0.12.0 [110/66] via 10.1.34.3, 06:50:28, Vlan1
+   C       10.1.2.0 is directly connected, FastEthernet1
+   C       10.1.1.0 is directly connected, FastEthernet0
+   O IA    10.0.1.0 [110/3] via 10.1.34.3, 06:50:28, Vlan1
+   O IA    10.0.23.0 [110/2] via 10.1.34.3, 06:50:30, Vlan1
+   C       10.1.34.0 is directly connected, Vlan1
