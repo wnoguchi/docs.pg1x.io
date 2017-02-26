@@ -247,13 +247,13 @@ Proposed idle-PC value の設定。
 * Name: ``multi-area-ospf-1``
 * Location: ``C:\Users\wnogu\GNS3\projects\multi-area-ospf-1``
 
-.. image:: img/2017-02-26_00h02_51-create-project.png
+.. image:: img/2017-02-26_00h10_42-create-project.png
 
 そしてやっと GNS3 の Workspace が拝める。
 いや、長かった。。。
 初めて経験するプラットフォームのプログラム書いたときぐらい長かった。。。
 
-.. image:: img/2017-02-26_00h10_42-create-project.png
+.. image:: img/2017-02-26_00h04_24-gns3-workspace.png
 
 ==========================================================
 初めての GNS3 トポロジー
@@ -261,7 +261,7 @@ Proposed idle-PC value の設定。
 
 #. `Your first GNS3 topology - GNS3 <https://docs.gns3.com/1wr2j2jEfX6ihyzpXzC23wQ8ymHzID4K3Hn99-qqshfg/index.html>`_
 
-.. images:: img/2017-02-26_00h30_05-sample-topology.png
+.. image:: img/2017-02-26_00h30_05-sample-topology.png
 
 基本的なコンフィグ
 ---------------------------------------
