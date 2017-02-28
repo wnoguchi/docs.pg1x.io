@@ -1458,3 +1458,75 @@ R2: エリア0_内部ルータ::
    O IA    10.0.1.0 [110/3] via 10.1.34.3, 06:50:28, Vlan1
    O IA    10.0.23.0 [110/2] via 10.1.34.3, 06:50:30, Vlan1
    C       10.1.34.0 is directly connected, Vlan1
+
+====================================================================
+仮想リンク（バーチャルリンク, Virtual Link）
+====================================================================
+
+R1::
+
+   en
+   conf t
+   int fa0/0
+   ip address 10.0.1.1 255.255.255.0
+   no shut
+   int s0/0
+   ip address 10.0.12.1 255.255.255.0
+   no shut
+   end
+   write memory
+
+R2::
+
+   en
+   conf t
+   int s0/0
+   ip address 10.0.12.2 255.255.255.0
+   no shut
+   int s0/1
+   ip address 10.1.23.2 255.255.255.0
+   no shut
+   int lo0
+   ip address 2.2.2.2 255.255.255.255
+   end
+   write memory
+
+R3::
+
+   en
+   conf t
+   int s0/0
+   ip address 10.1.23.3 255.255.255.0
+   no shut
+   int f0/0
+   ip address 10.1.34.3 255.255.255.0
+   no shut
+   end
+   write memory
+
+R4::
+
+   en
+   conf t
+   int f0/0
+   ip address 10.1.34.4 255.255.255.0
+   no shut
+   int s0/0
+   ip address 10.2.45.4 255.255.255.0
+   no shut
+   int lo0
+   ip address 4.4.4.4 255.255.255.255
+   end
+   write memory
+
+R5::
+
+   en
+   conf t
+   int s0/0
+   ip address 10.2.45.5 255.255.255.0
+   no shut
+   int f0/0
+   ip address 10.2.5.5 255.255.255.0
+   no shut
+   end
