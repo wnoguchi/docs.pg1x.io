@@ -1610,3 +1610,166 @@ R4 は仮想リンクによって Area 0 と接続されたため、エリア間
        First 0x0(0)/0x0(0) Next 0x0(0)/0x0(0)
        Last retransmission scan length is 0, maximum is 0
        Last retransmission scan time is 0 msec, maximum is 0 msec
+
+.. code-block:: text
+
+R4#sh ip ospf
+ Routing Process "ospf 1" with ID 4.4.4.4
+ Start time: 00:00:10.364, Time elapsed: 00:40:46.200
+ Supports only single TOS(TOS0) routes
+ Supports opaque LSA
+ Supports Link-local Signaling (LLS)
+ Supports area transit capability
+ It is an area border router
+ Router is not originating router-LSAs with maximum metric
+ Initial SPF schedule delay 5000 msecs
+ Minimum hold time between two consecutive SPFs 10000 msecs
+ Maximum wait time between two consecutive SPFs 10000 msecs
+ Incremental-SPF disabled
+ Minimum LSA interval 5 secs
+ Minimum LSA arrival 1000 msecs
+ LSA group pacing timer 240 secs
+ Interface flood pacing timer 33 msecs
+ Retransmission pacing timer 66 msecs
+ Number of external LSA 0. Checksum Sum 0x000000
+ Number of opaque AS LSA 0. Checksum Sum 0x000000
+ Number of DCbitless external and opaque AS LSA 0
+ Number of DoNotAge external and opaque AS LSA 0
+ Number of areas in this router is 3. 3 normal 0 stub 0 nssa
+ Number of areas transit capable is 1
+ External flood list length 0
+ IETF NSF helper support enabled
+ Cisco NSF helper support enabled
+    Area BACKBONE(0)
+        Number of interfaces in this area is 1
+        Area has no authentication
+        SPF algorithm last executed 00:32:23.988 ago
+        SPF algorithm executed 3 times
+        Area ranges are
+        Number of LSA 9. Checksum Sum 0x02FA34
+        Number of opaque link LSA 0. Checksum Sum 0x000000
+        Number of DCbitless LSA 0
+        Number of indication LSA 0
+        Number of DoNotAge LSA 4
+        Flood list length 0
+    Area 1
+        Number of interfaces in this area is 1
+        This area has transit capability: Virtual Link Endpoint
+        Area has no authentication
+        SPF algorithm last executed 00:32:23.996 ago
+        SPF algorithm executed 6 times
+        Area ranges are
+        Number of LSA 8. Checksum Sum 0x03FD09
+        Number of opaque link LSA 0. Checksum Sum 0x000000
+        Number of DCbitless LSA 0
+        Number of indication LSA 0
+        Number of DoNotAge LSA 0
+        Flood list length 0
+    Area 2
+        Number of interfaces in this area is 1
+        Area has no authentication
+        SPF algorithm last executed 00:32:38.376 ago
+        SPF algorithm executed 4 times
+        Area ranges are
+        Number of LSA 6. Checksum Sum 0x02CA44
+        Number of opaque link LSA 0. Checksum Sum 0x000000
+        Number of DCbitless LSA 0
+        Number of indication LSA 0
+        Number of DoNotAge LSA 0
+        Flood list length 0
+
+R4#sh ip ospf neighbor
+
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+2.2.2.2           0   FULL/  -           -        10.1.23.2       OSPF_VL0
+10.1.34.3         1   FULL/DR         00:00:31    10.1.34.3       FastEthernet0/0
+10.2.45.5         0   FULL/  -        00:00:35    10.2.45.5       Serial0/0
+R4#sh ip ospf int bri
+Interface    PID   Area            IP Address/Mask    Cost  State Nbrs F/C
+VL0          1     0               10.1.34.4/24       74    P2P   1/1
+Fa0/0        1     1               10.1.34.4/24       10    BDR   1/1
+Se0/0        1     2               10.2.45.4/24       64    P2P   1/1
+R4#sh ip int bri
+Interface                  IP-Address      OK? Method Status                Protocol
+FastEthernet0/0            10.1.34.4       YES NVRAM  up                    up
+Serial0/0                  10.2.45.4       YES NVRAM  up                    up
+FastEthernet0/1            unassigned      YES NVRAM  administratively down down
+Serial0/1                  unassigned      YES NVRAM  administratively down down
+FastEthernet1/0            unassigned      YES NVRAM  administratively down down
+Serial2/0                  unassigned      YES NVRAM  administratively down down
+Serial2/1                  unassigned      YES NVRAM  administratively down down
+Serial2/2                  unassigned      YES NVRAM  administratively down down
+Serial2/3                  unassigned      YES NVRAM  administratively down down
+Loopback0                  4.4.4.4         YES NVRAM  up                    up
+
+Do Not Age(DNA)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+バーチャルリンクの LSA はエージアウトしないので、バーチャルリンクに対する過度なフラッディングを防いでいる。
+
+.. code-block:: text
+
+   R4#sh ip ospf database
+   
+               OSPF Router with ID (4.4.4.4) (Process ID 1)
+   
+                   Router Link States (Area 0)
+   
+   Link ID         ADV Router      Age         Seq#       Checksum Link count
+   2.2.2.2         2.2.2.2         1     (DNA) 0x80000002 0x00A21B 3
+   4.4.4.4         4.4.4.4         285         0x80000003 0x00B1D9 1
+   10.0.12.1       10.0.12.1       489   (DNA) 0x80000002 0x0029F1 3
+   
+                   Summary Net Link States (Area 0)
+   
+   Link ID         ADV Router      Age         Seq#       Checksum
+   10.1.23.0       2.2.2.2         489   (DNA) 0x80000001 0x00438F
+   10.1.23.0       4.4.4.4         285         0x80000002 0x006956
+   10.1.34.0       2.2.2.2         479   (DNA) 0x80000002 0x002C90
+   10.1.34.0       4.4.4.4         285         0x80000002 0x006D87
+   10.2.5.0        4.4.4.4         285         0x80000002 0x0024AC
+   10.2.45.0       4.4.4.4         285         0x80000002 0x0006AC
+   
+                   Router Link States (Area 1)
+   
+   Link ID         ADV Router      Age         Seq#       Checksum Link count
+   2.2.2.2         2.2.2.2         286         0x80000003 0x00D244 2
+   4.4.4.4         4.4.4.4         287         0x80000006 0x00702E 1
+   10.1.34.3       10.1.34.3       781         0x80000004 0x00A0D7 3
+   
+                   Net Link States (Area 1)
+   
+   Link ID         ADV Router      Age         Seq#       Checksum
+   10.1.34.3       10.1.34.3       781         0x80000002 0x007E1A
+   
+                   Summary Net Link States (Area 1)
+   
+   Link ID         ADV Router      Age         Seq#       Checksum
+   10.0.1.0        2.2.2.2         793         0x80000003 0x00A23B
+   10.0.12.0       2.2.2.2         793         0x80000002 0x00C617
+   10.2.5.0        4.4.4.4         287         0x80000002 0x0024AC
+   10.2.45.0       4.4.4.4         287         0x80000002 0x0006AC
+   
+                   Router Link States (Area 2)
+   
+   Link ID         ADV Router      Age         Seq#       Checksum Link count
+   4.4.4.4         4.4.4.4         287         0x80000003 0x00D8F3 2
+   10.2.45.5       10.2.45.5       774         0x80000004 0x005022 3
+   
+                   Summary Net Link States (Area 2)
+   
+   Link ID         ADV Router      Age         Seq#       Checksum
+   10.0.1.0        4.4.4.4         287         0x80000002 0x004F3D
+   10.0.12.0       4.4.4.4         289         0x80000002 0x00711A
+   10.1.23.0       4.4.4.4         289         0x80000002 0x006956
+   10.1.34.0       4.4.4.4         289         0x80000002 0x006D87
+
+バーチャルリンクまとめ
+---------------------------------------
+
+バーチャルリンクを使うとネットワークが複雑になってトラブルシュートも大変なので一時的なソリューションとして認識すべき。
+
+===========================================================
+OSPF のオプション設定
+===========================================================
+
