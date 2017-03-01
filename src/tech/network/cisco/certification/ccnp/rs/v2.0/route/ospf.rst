@@ -1551,3 +1551,20 @@ R5::
    
    R5(config)#router ospf 1
    R5(config-router)#network 10.0.0.0 0.255.255.255 area 2
+
+仮想リンク(Virtual Link) の設定
+------------------------------------------------
+
+トランジットエリアとなる Area 1 を指定して対向ルータ ID を指定する。
+
+R2::
+
+   conf t
+   router ospf 1
+   area 1 virtual-link 4.4.4.4
+
+R4::
+
+   conf t
+   router ospf 1
+   area 1 virtual-link 2.2.2.2
