@@ -1563,8 +1563,50 @@ R2::
    router ospf 1
    area 1 virtual-link 4.4.4.4
 
-R4::
+R4
+
+.. code-block:: IOS
 
    conf t
    router ospf 1
    area 1 virtual-link 2.2.2.2
+
+R4 は仮想リンクによって Area 0 と接続されたため、エリア間ルート(IA)としてではなく、エリア内ルートとして認識されている。
+
+仮想リンク(Virtual Link) の検証
+---------------------------------------------------------------------
+
+#. `Supported languages — Pygments <http://pygments.org/languages/>`_
+#. `nemith/pygments-routerlexers: Lexers for router configurations for Pygments <https://github.com/nemith/pygments-routerlexers>`_
+
+.. code-block:: text
+
+   R2#sh ip ospf virtual-links
+   Virtual Link OSPF_VL0 to router 4.4.4.4 is up
+     Run as demand circuit
+     DoNotAge LSA allowed.
+     Transit area 1, via interface Serial0/1, Cost of using 74
+     Transmit Delay is 1 sec, State POINT_TO_POINT,
+     Timer intervals configured, Hello 10, Dead 40, Wait 40, Retransmit 5
+       Hello due in 00:00:03
+       Adjacency State FULL (Hello suppressed)
+       Index 2/3, retransmission queue length 0, number of retransmission 0
+       First 0x0(0)/0x0(0) Next 0x0(0)/0x0(0)
+       Last retransmission scan length is 0, maximum is 0
+       Last retransmission scan time is 0 msec, maximum is 0 msec
+
+.. code-block:: text
+
+   R4#sh ip ospf virtual-links
+   Virtual Link OSPF_VL0 to router 2.2.2.2 is up
+     Run as demand circuit
+     DoNotAge LSA allowed.
+     Transit area 1, via interface FastEthernet0/0, Cost of using 74
+     Transmit Delay is 1 sec, State POINT_TO_POINT,
+     Timer intervals configured, Hello 10, Dead 40, Wait 40, Retransmit 5
+       Hello due in 00:00:07
+       Adjacency State FULL (Hello suppressed)
+       Index 1/3, retransmission queue length 0, number of retransmission 0
+       First 0x0(0)/0x0(0) Next 0x0(0)/0x0(0)
+       Last retransmission scan length is 0, maximum is 0
+       Last retransmission scan time is 0 msec, maximum is 0 msec
