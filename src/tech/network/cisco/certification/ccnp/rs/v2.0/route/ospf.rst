@@ -1536,41 +1536,18 @@ R5::
 ::
 
    R1(config)#router ospf 1
-   R1(config-router)#netwo
-   R1(config-router)#network 10.0.0.0 are
-   R1(config-router)#network 10.0.0.0 area
-   R1(config-router)#network 10.0.0.0 area ?
-   % Unrecognized command
-   R1(config-router)#network 10.0.0.0 area 0
-                                      ^
-   % Invalid input detected at '^' marker.
-   
-   R1(config-router)#network 10.0.0.0 ?
-     A.B.C.D  OSPF wild card bits
-   
-   R1(config-router)#network 10.0.0.0 0.255.255.255 are
    R1(config-router)#network 10.0.0.0 0.255.255.255 area 0
    
    R2(config)#router ospf 1
-   R2(config-router)#netwo
-   R2(config-router)#network 10.0.12.0 0.0.0.255 are
    R2(config-router)#network 10.0.12.0 0.0.0.255 area 0
-   R2(config-router)#network 10.0.12.0 0.0.0.255 area 0
-   *Mar  1 00:05:42.659: %OSPF-5-ADJCHG: Process 1, Nbr 10.0.12.1 on Serial0/0 from LOADING to FULL, Loading Done
    R2(config-router)#network 10.1.23.0 0.0.0.255 area 1
    
    R3(config)#router ospf 1
-   R3(config-router)#networ
-   R3(config-router)#network 10.0.0.0 0.255.255.255 are
    R3(config-router)#network 10.0.0.0 0.255.255.255 area 1
    
    R4(config)#router ospf 1
-   R4(config-router)#networ
-   R4(config-router)#network 10.1.34.0 0.0.0.255 are
    R4(config-router)#network 10.1.34.0 0.0.0.255 area 1
-   R4(config-router)#network 10.1.34.0 0.0.0.255 area 1
+   R4(config-router)#network 10.2.45.0 0.0.0.255 area 2
    
    R5(config)#router ospf 1
-   R5(config-router)#netwo
-   R5(config-router)#network 10.0.0.0 0.255.255.255 are
    R5(config-router)#network 10.0.0.0 0.255.255.255 area 2
