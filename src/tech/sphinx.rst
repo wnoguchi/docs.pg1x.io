@@ -8,6 +8,7 @@ Sphinx
 #. `Windowsへのインストール — Python製ドキュメンテーションビルダー、Sphinxの日本ユーザ会 <http://sphinx-users.jp/gettingstarted/install_windows.html#install-easy-install>`_
 #. `sphinx-quickstartの詳細説明 — Python製ドキュメンテーションビルダー、Sphinxの日本ユーザ会 <http://sphinx-users.jp/gettingstarted/sphinxquickstart.html>`_
 #. `Sphinxの最初の一歩 — Sphinx 1.4.4 ドキュメント <http://docs.sphinx-users.jp/tutorial.html>`_
+#. `Sphinx as a Static Site Generator — Amit Saha: Technical Writings <http://echorand.me/site/notes/articles/sphinx/static_html.html>`_
 
 sphinx-quickstart
 
