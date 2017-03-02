@@ -1613,94 +1613,94 @@ R4 は仮想リンクによって Area 0 と接続されたため、エリア間
 
 .. code-block:: text
 
-R4#sh ip ospf
- Routing Process "ospf 1" with ID 4.4.4.4
- Start time: 00:00:10.364, Time elapsed: 00:40:46.200
- Supports only single TOS(TOS0) routes
- Supports opaque LSA
- Supports Link-local Signaling (LLS)
- Supports area transit capability
- It is an area border router
- Router is not originating router-LSAs with maximum metric
- Initial SPF schedule delay 5000 msecs
- Minimum hold time between two consecutive SPFs 10000 msecs
- Maximum wait time between two consecutive SPFs 10000 msecs
- Incremental-SPF disabled
- Minimum LSA interval 5 secs
- Minimum LSA arrival 1000 msecs
- LSA group pacing timer 240 secs
- Interface flood pacing timer 33 msecs
- Retransmission pacing timer 66 msecs
- Number of external LSA 0. Checksum Sum 0x000000
- Number of opaque AS LSA 0. Checksum Sum 0x000000
- Number of DCbitless external and opaque AS LSA 0
- Number of DoNotAge external and opaque AS LSA 0
- Number of areas in this router is 3. 3 normal 0 stub 0 nssa
- Number of areas transit capable is 1
- External flood list length 0
- IETF NSF helper support enabled
- Cisco NSF helper support enabled
-    Area BACKBONE(0)
-        Number of interfaces in this area is 1
-        Area has no authentication
-        SPF algorithm last executed 00:32:23.988 ago
-        SPF algorithm executed 3 times
-        Area ranges are
-        Number of LSA 9. Checksum Sum 0x02FA34
-        Number of opaque link LSA 0. Checksum Sum 0x000000
-        Number of DCbitless LSA 0
-        Number of indication LSA 0
-        Number of DoNotAge LSA 4
-        Flood list length 0
-    Area 1
-        Number of interfaces in this area is 1
-        This area has transit capability: Virtual Link Endpoint
-        Area has no authentication
-        SPF algorithm last executed 00:32:23.996 ago
-        SPF algorithm executed 6 times
-        Area ranges are
-        Number of LSA 8. Checksum Sum 0x03FD09
-        Number of opaque link LSA 0. Checksum Sum 0x000000
-        Number of DCbitless LSA 0
-        Number of indication LSA 0
-        Number of DoNotAge LSA 0
-        Flood list length 0
-    Area 2
-        Number of interfaces in this area is 1
-        Area has no authentication
-        SPF algorithm last executed 00:32:38.376 ago
-        SPF algorithm executed 4 times
-        Area ranges are
-        Number of LSA 6. Checksum Sum 0x02CA44
-        Number of opaque link LSA 0. Checksum Sum 0x000000
-        Number of DCbitless LSA 0
-        Number of indication LSA 0
-        Number of DoNotAge LSA 0
-        Flood list length 0
-
-R4#sh ip ospf neighbor
-
-Neighbor ID     Pri   State           Dead Time   Address         Interface
-2.2.2.2           0   FULL/  -           -        10.1.23.2       OSPF_VL0
-10.1.34.3         1   FULL/DR         00:00:31    10.1.34.3       FastEthernet0/0
-10.2.45.5         0   FULL/  -        00:00:35    10.2.45.5       Serial0/0
-R4#sh ip ospf int bri
-Interface    PID   Area            IP Address/Mask    Cost  State Nbrs F/C
-VL0          1     0               10.1.34.4/24       74    P2P   1/1
-Fa0/0        1     1               10.1.34.4/24       10    BDR   1/1
-Se0/0        1     2               10.2.45.4/24       64    P2P   1/1
-R4#sh ip int bri
-Interface                  IP-Address      OK? Method Status                Protocol
-FastEthernet0/0            10.1.34.4       YES NVRAM  up                    up
-Serial0/0                  10.2.45.4       YES NVRAM  up                    up
-FastEthernet0/1            unassigned      YES NVRAM  administratively down down
-Serial0/1                  unassigned      YES NVRAM  administratively down down
-FastEthernet1/0            unassigned      YES NVRAM  administratively down down
-Serial2/0                  unassigned      YES NVRAM  administratively down down
-Serial2/1                  unassigned      YES NVRAM  administratively down down
-Serial2/2                  unassigned      YES NVRAM  administratively down down
-Serial2/3                  unassigned      YES NVRAM  administratively down down
-Loopback0                  4.4.4.4         YES NVRAM  up                    up
+   R4#sh ip ospf
+    Routing Process "ospf 1" with ID 4.4.4.4
+    Start time: 00:00:10.364, Time elapsed: 00:40:46.200
+    Supports only single TOS(TOS0) routes
+    Supports opaque LSA
+    Supports Link-local Signaling (LLS)
+    Supports area transit capability
+    It is an area border router
+    Router is not originating router-LSAs with maximum metric
+    Initial SPF schedule delay 5000 msecs
+    Minimum hold time between two consecutive SPFs 10000 msecs
+    Maximum wait time between two consecutive SPFs 10000 msecs
+    Incremental-SPF disabled
+    Minimum LSA interval 5 secs
+    Minimum LSA arrival 1000 msecs
+    LSA group pacing timer 240 secs
+    Interface flood pacing timer 33 msecs
+    Retransmission pacing timer 66 msecs
+    Number of external LSA 0. Checksum Sum 0x000000
+    Number of opaque AS LSA 0. Checksum Sum 0x000000
+    Number of DCbitless external and opaque AS LSA 0
+    Number of DoNotAge external and opaque AS LSA 0
+    Number of areas in this router is 3. 3 normal 0 stub 0 nssa
+    Number of areas transit capable is 1
+    External flood list length 0
+    IETF NSF helper support enabled
+    Cisco NSF helper support enabled
+       Area BACKBONE(0)
+           Number of interfaces in this area is 1
+           Area has no authentication
+           SPF algorithm last executed 00:32:23.988 ago
+           SPF algorithm executed 3 times
+           Area ranges are
+           Number of LSA 9. Checksum Sum 0x02FA34
+           Number of opaque link LSA 0. Checksum Sum 0x000000
+           Number of DCbitless LSA 0
+           Number of indication LSA 0
+           Number of DoNotAge LSA 4
+           Flood list length 0
+       Area 1
+           Number of interfaces in this area is 1
+           This area has transit capability: Virtual Link Endpoint
+           Area has no authentication
+           SPF algorithm last executed 00:32:23.996 ago
+           SPF algorithm executed 6 times
+           Area ranges are
+           Number of LSA 8. Checksum Sum 0x03FD09
+           Number of opaque link LSA 0. Checksum Sum 0x000000
+           Number of DCbitless LSA 0
+           Number of indication LSA 0
+           Number of DoNotAge LSA 0
+           Flood list length 0
+       Area 2
+           Number of interfaces in this area is 1
+           Area has no authentication
+           SPF algorithm last executed 00:32:38.376 ago
+           SPF algorithm executed 4 times
+           Area ranges are
+           Number of LSA 6. Checksum Sum 0x02CA44
+           Number of opaque link LSA 0. Checksum Sum 0x000000
+           Number of DCbitless LSA 0
+           Number of indication LSA 0
+           Number of DoNotAge LSA 0
+           Flood list length 0
+   
+   R4#sh ip ospf neighbor
+   
+   Neighbor ID     Pri   State           Dead Time   Address         Interface
+   2.2.2.2           0   FULL/  -           -        10.1.23.2       OSPF_VL0
+   10.1.34.3         1   FULL/DR         00:00:31    10.1.34.3       FastEthernet0/0
+   10.2.45.5         0   FULL/  -        00:00:35    10.2.45.5       Serial0/0
+   R4#sh ip ospf int bri
+   Interface    PID   Area            IP Address/Mask    Cost  State Nbrs F/C
+   VL0          1     0               10.1.34.4/24       74    P2P   1/1
+   Fa0/0        1     1               10.1.34.4/24       10    BDR   1/1
+   Se0/0        1     2               10.2.45.4/24       64    P2P   1/1
+   R4#sh ip int bri
+   Interface                  IP-Address      OK? Method Status                Protocol
+   FastEthernet0/0            10.1.34.4       YES NVRAM  up                    up
+   Serial0/0                  10.2.45.4       YES NVRAM  up                    up
+   FastEthernet0/1            unassigned      YES NVRAM  administratively down down
+   Serial0/1                  unassigned      YES NVRAM  administratively down down
+   FastEthernet1/0            unassigned      YES NVRAM  administratively down down
+   Serial2/0                  unassigned      YES NVRAM  administratively down down
+   Serial2/1                  unassigned      YES NVRAM  administratively down down
+   Serial2/2                  unassigned      YES NVRAM  administratively down down
+   Serial2/3                  unassigned      YES NVRAM  administratively down down
+   Loopback0                  4.4.4.4         YES NVRAM  up                    up
 
 Do Not Age(DNA)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
