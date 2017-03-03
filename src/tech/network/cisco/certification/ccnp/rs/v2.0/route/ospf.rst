@@ -1770,6 +1770,90 @@ Do Not Age(DNA)
 バーチャルリンクを使うとネットワークが複雑になってトラブルシュートも大変なので一時的なソリューションとして認識すべき。
 
 ===========================================================
-OSPF のオプション設定
+ルート集約(Route Summarization)
 ===========================================================
 
+.. image:: img/ospf-summarization-topology.png
+
+サブインターフェイスを使う。
+サブインターフェイスはまず物理インターフェイスを ``no shut`` しないといけない。
+サブインターフェイスは物理インターフェイスが up/up ならデフォルトで up/up となる。
+シャットダウンするときは明示的に shutdown しなければならない。
+
+WIP
+
+R1
+
+.. code-block:: IOS
+
+   conf t
+   ! interface configuration
+   int fa0/1
+   no shut
+   int fa0/1.1
+   encapsulation dot1Q 1
+   ip address 172.16.0.254 255.255.255.0
+   int fa0/1.2
+   encapsulation dot1Q 2
+   ip address 172.16.1.254 255.255.255.0
+   int s0/0
+   ip address 10.0.12.1 255.255.255.0
+   no shut
+   !
+   ! OSPF configuration
+   router ospf 1
+   network 172.16.0.0 0.0.255.255 area 0
+   network 10.0.0.0 0.255.255.255 area 0
+   exit
+   !
+   end
+   write memory
+
+R2
+
+.. code-block:: IOS
+
+   conf t
+   ! interface configuration
+   int s0/0
+   ip address 10.0.12.2 255.255.255.0
+   no shut
+   int fa0/0
+   ip address 10.1.23.2 255.255.255.0
+   no shut
+   !
+   ! OSPF configuration
+   router ospf 1
+   network 10.0.0.0 0.0.255.255 area 0
+   network 10.1.0.0 0.0.255.255 area 1
+   exit
+   !
+   end
+   write memory
+
+R3
+
+.. code-block:: IOS
+
+   conf t
+   ! interface configuration
+   int fa0/0
+   ip address 10.1.23.3 255.255.255.0
+   no shut
+   int fa0/1
+   no shut
+   int fa0/1.1
+   encapsulation dot1Q 1
+   ip address 172.16.8.254 255.255.255.0
+   int fa0/1.2
+   encapsulation dot1Q 1
+   ip address 172.16.9.254 255.255.255.0
+   !
+   ! OSPF configuration
+   router ospf 1
+   network 172.16.0.0 0.0.255.255 area 1
+   network 10.0.0.0 0.255.255.255 area 1
+   exit
+   !
+   end
+   write memory
