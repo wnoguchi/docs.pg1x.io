@@ -1894,7 +1894,7 @@ R3
 
 ルート集約前のルーティングテーブル。
 
-.. code-block: shell-session
+.. code-block:: shell-session
 
    R1#sh ip route ospf
         172.16.0.0/24 is subnetted, 16 subnets
@@ -1909,7 +1909,7 @@ R3
         10.0.0.0/24 is subnetted, 2 subnets
    O IA    10.1.23.0 [110/74] via 10.0.12.2, 00:00:48, Serial0/0
 
-.. code-block: shell-session
+.. code-block:: shell-session
 
    R2#sh ip route ospf
         172.16.0.0/24 is subnetted, 16 subnets
@@ -1930,7 +1930,7 @@ R3
    O       172.16.2.0 [110/74] via 10.0.12.1, 00:00:39, Serial0/0
    O       172.16.3.0 [110/74] via 10.0.12.1, 00:00:39, Serial0/0
 
-.. code-block: shell-session
+.. code-block:: shell-session
 
    R3#sh ip route ospf
         172.16.0.0/24 is subnetted, 16 subnets
@@ -1955,7 +1955,7 @@ ABR である R2 のルート集約を設定する。
    area 1 range 172.16.8.0 255.255.248.0
    end
 
-.. code-block: shell-session
+.. code-block:: shell-session
 
    R1#sh ip route ospf
         172.16.0.0/16 is variably subnetted, 9 subnets, 2 masks
@@ -1963,7 +1963,7 @@ ABR である R2 のルート集約を設定する。
         10.0.0.0/24 is subnetted, 2 subnets
    O IA    10.1.23.0 [110/74] via 10.0.12.2, 00:07:44, Serial0/0
 
-.. code-block: shell-session
+.. code-block:: shell-session
 
    R2#sh ip route ospf
         172.16.0.0/16 is variably subnetted, 18 subnets, 2 masks
@@ -1986,7 +1986,7 @@ ABR である R2 のルート集約を設定する。
    O       172.16.2.0/24 [110/74] via 10.0.12.1, 00:00:30, Serial0/0
    O       172.16.3.0/24 [110/74] via 10.0.12.1, 00:00:30, Serial0/0
 
-.. code-block: shell-session
+.. code-block:: shell-session
 
    R3#sh ip route ospf
         172.16.0.0/16 is variably subnetted, 9 subnets, 2 masks
@@ -1996,7 +1996,7 @@ ABR である R2 のルート集約を設定する。
 
 試しに ping や traceroute を叩いてみる。
 
-.. code-block: shell-session
+.. code-block:: shell-session
 
    R1#ping 172.16.9.254
    
@@ -2012,7 +2012,7 @@ ABR である R2 のルート集約を設定する。
      1 10.0.12.2 4 msec 0 msec 0 msec
      2 10.1.23.3 12 msec 20 msec 20 msec
 
-.. code-block: shell-session
+.. code-block:: shell-session
 
    R3#ping 172.16.1.254
    
@@ -2030,7 +2030,7 @@ ABR である R2 のルート集約を設定する。
 
 経路集約の設定の確認
 
-.. code-block: shell-session
+.. code-block:: shell-session
 
    R2#sh ip ospf
     Routing Process "ospf 1" with ID 10.1.23.2
@@ -2186,7 +2186,7 @@ PC1::
 
 動作確認
 
-.. code-block: shell-session
+.. code-block:: shell-session
 
    PC1> ping 172.16.0.1
    84 bytes from 172.16.0.1 icmp_seq=1 ttl=253 time=11.175 ms
@@ -2197,7 +2197,7 @@ PC1::
 
 ルーティングテーブル確認
 
-.. code-block: shell-session
+.. code-block:: shell-session
 
    R1#sh ip route
    Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
@@ -2217,9 +2217,9 @@ PC1::
    C       172.16.2.0 is directly connected, FastEthernet0/1.3
         10.0.0.0/24 is subnetted, 2 subnets
    R       10.0.1.0 [120/5] via 172.16.12.2, 00:00:11, Serial0/0
-R       10.0.23.0 [120/5] via 172.16.12.2, 00:00:17, Serial0/0
+   R       10.0.23.0 [120/5] via 172.16.12.2, 00:00:17, Serial0/0
 
-.. code-block: shell-session
+.. code-block:: shell-session
 
    R2#sh ip route
    Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
@@ -2241,7 +2241,7 @@ R       10.0.23.0 [120/5] via 172.16.12.2, 00:00:17, Serial0/0
    O       10.0.1.0 [110/20] via 10.0.23.3, 00:00:10, FastEthernet0/0
    C       10.0.23.0 is directly connected, FastEthernet0/0
 
-.. code-block: shell-session
+.. code-block:: shell-session
 
    R3#sh ip route
    Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
@@ -2275,7 +2275,7 @@ R       10.0.23.0 [120/5] via 172.16.12.2, 00:00:17, Serial0/0
 集約後のルーティングテーブルは以下のようになる。
 スッキリ。
 
-.. code-block: shell-session
+.. code-block:: shell-session
 
    R1#sh ip route
    Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
@@ -2298,7 +2298,7 @@ R       10.0.23.0 [120/5] via 172.16.12.2, 00:00:17, Serial0/0
    R       10.0.1.0 [120/5] via 172.16.12.2, 00:00:01, Serial0/0
    R       10.0.23.0 [120/5] via 172.16.12.2, 00:00:02, Serial0/0
 
-.. code-block: shell-session
+.. code-block:: shell-session
 
    R2#sh ip route
    Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
@@ -2321,7 +2321,7 @@ R       10.0.23.0 [120/5] via 172.16.12.2, 00:00:17, Serial0/0
    O       10.0.1.0 [110/20] via 10.0.23.3, 00:01:25, FastEthernet0/0
    C       10.0.23.0 is directly connected, FastEthernet0/0
 
-.. code-block: shell-session
+.. code-block:: shell-session
 
    R3#sh ip route
    Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
@@ -2372,7 +2372,7 @@ R1
    end
    wr
 
-R2
+R2(CE)
 
 .. code-block:: IOS
 
@@ -2416,7 +2416,7 @@ PC1::
    ip 10.1.1.11 255.255.255.0 10.1.1.1
    save
 
-.. code-block: shell-session
+.. code-block:: shell-session
 
    R1#sh ip ro
    Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
@@ -2433,7 +2433,7 @@ PC1::
    C       10.2.2.0 is directly connected, FastEthernet0/0
    C       10.1.1.0 is directly connected, FastEthernet0/1
 
-.. code-block: shell-session
+.. code-block:: shell-session
 
    R2#sh ip rou
    Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
@@ -2453,7 +2453,7 @@ PC1::
    O       10.1.1.0 [110/20] via 10.2.2.1, 00:00:11, FastEthernet0/0
    S*   0.0.0.0/0 [1/0] via 172.16.1.3
 
-.. code-block: shell-session
+.. code-block:: shell-session
 
    R3#sh ip ro
    Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
@@ -2474,7 +2474,7 @@ PC1::
 R1 はデフォルトルートの設定がない。
 したがってルーティングテーブルにも合致するものがないため、ping が失敗する。
 
-.. code-block: shell-session
+.. code-block:: shell-session
 
    PC1> ping 172.16.1.3
    *10.1.1.1 icmp_seq=1 ttl=255 time=9.397 ms (ICMP type:3, code:1, Destination host unreachable)
@@ -2489,14 +2489,14 @@ LSA タイプ5 でアドバタイズされる。
 
 R2
 
-.. code-block: shell-session
+.. code-block:: shell-session
 
    conf t
    router ospf 1
    default-information originate
    end
 
-.. code-block: shell-session
+.. code-block:: shell-session
 
    R1#sh ip route
    Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
@@ -2517,7 +2517,7 @@ R2
 ルーティングテーブルに OSPF によるデフォルトルートが載った。
 当然 ping は成功する。
 
-.. code-block: shell-session
+.. code-block:: shell-session
 
    PC1> ping 172.16.1.3
    84 bytes from 172.16.1.3 icmp_seq=1 ttl=253 time=31.069 ms
@@ -2526,7 +2526,7 @@ R2
    84 bytes from 172.16.1.3 icmp_seq=4 ttl=253 time=13.561 ms
    84 bytes from 172.16.1.3 icmp_seq=5 ttl=253 time=13.081 ms
 
-.. code-block: shell-session
+.. code-block:: shell-session
 
    R3#ping 10.1.1.11
    
