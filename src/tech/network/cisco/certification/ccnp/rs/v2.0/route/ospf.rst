@@ -1796,6 +1796,24 @@ R1
    int fa0/1.2
    encapsulation dot1Q 2
    ip address 172.16.1.254 255.255.255.0
+   int fa0/1.3
+   encapsulation dot1Q 3
+   ip address 172.16.2.254 255.255.255.0
+   int fa0/1.4
+   encapsulation dot1Q 4
+   ip address 172.16.3.254 255.255.255.0
+   int fa0/1.5
+   encapsulation dot1Q 5
+   ip address 172.16.4.254 255.255.255.0
+   int fa0/1.6
+   encapsulation dot1Q 6
+   ip address 172.16.5.254 255.255.255.0
+   int fa0/1.7
+   encapsulation dot1Q 7
+   ip address 172.16.6.254 255.255.255.0
+   int fa0/1.8
+   encapsulation dot1Q 8
+   ip address 172.16.7.254 255.255.255.0
    int s0/0
    ip address 10.0.12.1 255.255.255.0
    no shut
@@ -1807,7 +1825,7 @@ R1
    exit
    !
    end
-   write memory
+   wr
 
 R2
 
@@ -1829,7 +1847,7 @@ R2
    exit
    !
    end
-   write memory
+   wr
 
 R3
 
@@ -1846,8 +1864,26 @@ R3
    encapsulation dot1Q 1
    ip address 172.16.8.254 255.255.255.0
    int fa0/1.2
-   encapsulation dot1Q 1
+   encapsulation dot1Q 2
    ip address 172.16.9.254 255.255.255.0
+   int fa0/1.3
+   encapsulation dot1Q 3
+   ip address 172.16.10.254 255.255.255.0
+   int fa0/1.4
+   encapsulation dot1Q 4
+   ip address 172.16.11.254 255.255.255.0
+   int fa0/1.5
+   encapsulation dot1Q 5
+   ip address 172.16.12.254 255.255.255.0
+   int fa0/1.6
+   encapsulation dot1Q 6
+   ip address 172.16.13.254 255.255.255.0
+   int fa0/1.7
+   encapsulation dot1Q 7
+   ip address 172.16.14.254 255.255.255.0
+   int fa0/1.8
+   encapsulation dot1Q 8
+   ip address 172.16.15.254 255.255.255.0
    !
    ! OSPF configuration
    router ospf 1
@@ -1856,4 +1892,140 @@ R3
    exit
    !
    end
-   write memory
+   wr
+
+ルート集約前のルーティングテーブル。
+
+.. code-block: shell-session
+
+   R1#sh ip route ospf
+        172.16.0.0/24 is subnetted, 16 subnets
+   O IA    172.16.12.0 [110/84] via 10.0.12.2, 00:00:05, Serial0/0
+   O IA    172.16.13.0 [110/84] via 10.0.12.2, 00:00:05, Serial0/0
+   O IA    172.16.14.0 [110/84] via 10.0.12.2, 00:00:05, Serial0/0
+   O IA    172.16.15.0 [110/84] via 10.0.12.2, 00:00:05, Serial0/0
+   O IA    172.16.8.0 [110/84] via 10.0.12.2, 00:00:05, Serial0/0
+   O IA    172.16.9.0 [110/84] via 10.0.12.2, 00:00:05, Serial0/0
+   O IA    172.16.10.0 [110/84] via 10.0.12.2, 00:00:05, Serial0/0
+   O IA    172.16.11.0 [110/84] via 10.0.12.2, 00:00:05, Serial0/0
+        10.0.0.0/24 is subnetted, 2 subnets
+   O IA    10.1.23.0 [110/74] via 10.0.12.2, 00:00:48, Serial0/0
+
+.. code-block: shell-session
+
+   R2#sh ip route ospf
+        172.16.0.0/24 is subnetted, 16 subnets
+   O       172.16.12.0 [110/20] via 10.1.23.3, 00:00:00, FastEthernet0/0
+   O       172.16.13.0 [110/20] via 10.1.23.3, 00:00:00, FastEthernet0/0
+   O       172.16.14.0 [110/20] via 10.1.23.3, 00:00:00, FastEthernet0/0
+   O       172.16.15.0 [110/20] via 10.1.23.3, 00:00:00, FastEthernet0/0
+   O       172.16.8.0 [110/20] via 10.1.23.3, 00:00:00, FastEthernet0/0
+   O       172.16.9.0 [110/20] via 10.1.23.3, 00:00:00, FastEthernet0/0
+   O       172.16.10.0 [110/20] via 10.1.23.3, 00:00:00, FastEthernet0/0
+   O       172.16.11.0 [110/20] via 10.1.23.3, 00:00:00, FastEthernet0/0
+   O       172.16.4.0 [110/74] via 10.0.12.1, 00:00:38, Serial0/0
+   O       172.16.5.0 [110/74] via 10.0.12.1, 00:00:38, Serial0/0
+   O       172.16.6.0 [110/74] via 10.0.12.1, 00:00:38, Serial0/0
+   O       172.16.7.0 [110/74] via 10.0.12.1, 00:00:38, Serial0/0
+   O       172.16.0.0 [110/74] via 10.0.12.1, 00:00:38, Serial0/0
+   O       172.16.1.0 [110/74] via 10.0.12.1, 00:00:38, Serial0/0
+   O       172.16.2.0 [110/74] via 10.0.12.1, 00:00:39, Serial0/0
+   O       172.16.3.0 [110/74] via 10.0.12.1, 00:00:39, Serial0/0
+
+.. code-block: shell-session
+
+   R3#sh ip route ospf
+        172.16.0.0/24 is subnetted, 16 subnets
+   O IA    172.16.4.0 [110/84] via 10.1.23.2, 00:00:02, FastEthernet0/0
+   O IA    172.16.5.0 [110/84] via 10.1.23.2, 00:00:02, FastEthernet0/0
+   O IA    172.16.6.0 [110/84] via 10.1.23.2, 00:00:02, FastEthernet0/0
+   O IA    172.16.7.0 [110/84] via 10.1.23.2, 00:00:02, FastEthernet0/0
+   O IA    172.16.0.0 [110/84] via 10.1.23.2, 00:00:02, FastEthernet0/0
+   O IA    172.16.1.0 [110/84] via 10.1.23.2, 00:00:02, FastEthernet0/0
+   O IA    172.16.2.0 [110/84] via 10.1.23.2, 00:00:02, FastEthernet0/0
+   O IA    172.16.3.0 [110/84] via 10.1.23.2, 00:00:02, FastEthernet0/0
+        10.0.0.0/24 is subnetted, 2 subnets
+   O IA    10.0.12.0 [110/74] via 10.1.23.2, 00:00:02, FastEthernet0/0
+
+ABR である R2 のルート集約を設定する。
+
+.. code-block:: IOS
+
+   conf t
+   router ospf 1
+   area 0 range 172.16.0.0 255.255.248.0
+   area 1 range 172.16.8.0 255.255.248.0
+   end
+
+.. code-block: shell-session
+
+   R1#sh ip route ospf
+        172.16.0.0/16 is variably subnetted, 9 subnets, 2 masks
+   O IA    172.16.8.0/21 [110/84] via 10.0.12.2, 00:00:19, Serial0/0
+        10.0.0.0/24 is subnetted, 2 subnets
+   O IA    10.1.23.0 [110/74] via 10.0.12.2, 00:07:44, Serial0/0
+
+.. code-block: shell-session
+
+   R2#sh ip route ospf
+        172.16.0.0/16 is variably subnetted, 18 subnets, 2 masks
+   O       172.16.12.0/24 [110/20] via 10.1.23.3, 00:00:29, FastEthernet0/0
+   O       172.16.13.0/24 [110/20] via 10.1.23.3, 00:00:29, FastEthernet0/0
+   O       172.16.14.0/24 [110/20] via 10.1.23.3, 00:00:29, FastEthernet0/0
+   O       172.16.15.0/24 [110/20] via 10.1.23.3, 00:00:29, FastEthernet0/0
+   O       172.16.8.0/24 [110/20] via 10.1.23.3, 00:00:29, FastEthernet0/0
+   O       172.16.8.0/21 is a summary, 00:00:29, Null0
+   O       172.16.9.0/24 [110/20] via 10.1.23.3, 00:00:29, FastEthernet0/0
+   O       172.16.10.0/24 [110/20] via 10.1.23.3, 00:00:29, FastEthernet0/0
+   O       172.16.11.0/24 [110/20] via 10.1.23.3, 00:00:29, FastEthernet0/0
+   O       172.16.4.0/24 [110/74] via 10.0.12.1, 00:00:29, Serial0/0
+   O       172.16.5.0/24 [110/74] via 10.0.12.1, 00:00:29, Serial0/0
+   O       172.16.6.0/24 [110/74] via 10.0.12.1, 00:00:29, Serial0/0
+   O       172.16.7.0/24 [110/74] via 10.0.12.1, 00:00:29, Serial0/0
+   O       172.16.0.0/24 [110/74] via 10.0.12.1, 00:00:29, Serial0/0
+   O       172.16.0.0/21 is a summary, 00:00:30, Null0
+   O       172.16.1.0/24 [110/74] via 10.0.12.1, 00:00:30, Serial0/0
+   O       172.16.2.0/24 [110/74] via 10.0.12.1, 00:00:30, Serial0/0
+   O       172.16.3.0/24 [110/74] via 10.0.12.1, 00:00:30, Serial0/0
+
+.. code-block: shell-session
+
+   R3#sh ip route ospf
+        172.16.0.0/16 is variably subnetted, 9 subnets, 2 masks
+   O IA    172.16.0.0/21 [110/84] via 10.1.23.2, 00:00:41, FastEthernet0/0
+        10.0.0.0/24 is subnetted, 2 subnets
+   O IA    10.0.12.0 [110/74] via 10.1.23.2, 00:07:23, FastEthernet0/0
+
+試しに ping や traceroute を叩いてみる。
+
+.. code-block: shell-session
+
+   R1#ping 172.16.9.254
+   
+   Type escape sequence to abort.
+   Sending 5, 100-byte ICMP Echos to 172.16.9.254, timeout is 2 seconds:
+   !!!!!
+   Success rate is 100 percent (5/5), round-trip min/avg/max = 16/23/32 ms
+   R1#traceroute 172.16.9.254
+   
+   Type escape sequence to abort.
+   Tracing the route to 172.16.9.254
+   
+     1 10.0.12.2 4 msec 0 msec 0 msec
+     2 10.1.23.3 12 msec 20 msec 20 msec
+
+.. code-block: shell-session
+
+   R3#ping 172.16.1.254
+   
+   Type escape sequence to abort.
+   Sending 5, 100-byte ICMP Echos to 172.16.1.254, timeout is 2 seconds:
+   !!!!!
+   Success rate is 100 percent (5/5), round-trip min/avg/max = 8/9/12 ms
+   R3#traceroute 172.16.1.254
+   
+   Type escape sequence to abort.
+   Tracing the route to 172.16.1.254
+   
+     1 10.1.23.2 16 msec 4 msec 16 msec
+     2 10.0.12.1 12 msec 8 msec 12 msec
