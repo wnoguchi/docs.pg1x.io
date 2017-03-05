@@ -25,6 +25,21 @@ Licences
 #. 基本情報技術者
 #. 普通運転免許 優良
 
+.. raw:: html
+
+   <div data-iframe-width="150" data-iframe-height="270" data-share-badge-id="6b562173-e71e-4171-bb8e-eeda444e6101"></div>
+   <script type="text/javascript">
+     (function() {
+       var s = document.createElement('script');
+       s.type = 'text/javascript';
+       s.async = true;
+       s.src = '//cdn.youracclaim.com/assets/utilities/embed.js';
+       var o = document.getElementsByTagName('script')[0];
+       o.parentNode.insertBefore(s, o);
+       })();
+   </script>
+
+
 =================================
 Dream
 =================================
