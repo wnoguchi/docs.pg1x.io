@@ -2349,3 +2349,188 @@ OSPF 経路集約まとめ
 OSPF デフォルトルート配布
 ===================================
 
+.. image:: img/ospf-default-route.png
+
+R1
+
+.. code-block:: IOS
+
+   conf t
+   ! interface configuration
+   int fa0/1
+   ip address 10.1.1.1 255.255.255.0
+   no shut
+   int fa0/0
+   ip address 10.2.2.1 255.255.255.0
+   no shut
+   !
+   ! OSPF configuration
+   router ospf 1
+   network 10.0.0.0 0.255.255.255 area 0
+   exit
+   !
+   end
+   wr
+
+R2
+
+.. code-block:: IOS
+
+   conf t
+   ! interface configuration
+   int fa0/0
+   ip address 10.2.2.2 255.255.255.0
+   no shut
+   int s0/0
+   ip address 172.16.1.2 255.255.255.0
+   no shut
+   !
+   ! OSPF configuration
+   router ospf 1
+   network 10.0.0.0 0.255.255.255 area 0
+   exit
+   !
+   ! Static routing for PE Router
+   ip route 0.0.0.0 0.0.0.0 172.16.1.3
+   end
+   wr
+
+R3(PE)
+
+.. code-block:: IOS
+
+   conf t
+   ! interface configuration
+   int s0/0
+   ip address 172.16.1.3 255.255.255.0
+   no shut
+   exit
+   !
+   ! Static routing for CE Router
+   ip route 10.0.0.0 255.0.0.0 172.16.1.2
+   end
+   wr
+
+PC1::
+
+   ip 10.1.1.11 255.255.255.0 10.1.1.1
+   save
+
+.. code-block: shell-session
+
+   R1#sh ip ro
+   Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
+          D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+          N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+          E1 - OSPF external type 1, E2 - OSPF external type 2
+          i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+          ia - IS-IS inter area, * - candidate default, U - per-user static route
+          o - ODR, P - periodic downloaded static route
+   
+   Gateway of last resort is not set
+   
+        10.0.0.0/24 is subnetted, 2 subnets
+   C       10.2.2.0 is directly connected, FastEthernet0/0
+   C       10.1.1.0 is directly connected, FastEthernet0/1
+
+.. code-block: shell-session
+
+   R2#sh ip rou
+   Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
+          D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+          N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+          E1 - OSPF external type 1, E2 - OSPF external type 2
+          i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+          ia - IS-IS inter area, * - candidate default, U - per-user static route
+          o - ODR, P - periodic downloaded static route
+   
+   Gateway of last resort is 172.16.1.3 to network 0.0.0.0
+   
+        172.16.0.0/24 is subnetted, 1 subnets
+   C       172.16.1.0 is directly connected, Serial0/0
+        10.0.0.0/24 is subnetted, 2 subnets
+   C       10.2.2.0 is directly connected, FastEthernet0/0
+   O       10.1.1.0 [110/20] via 10.2.2.1, 00:00:11, FastEthernet0/0
+   S*   0.0.0.0/0 [1/0] via 172.16.1.3
+
+.. code-block: shell-session
+
+   R3#sh ip ro
+   Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
+          D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+          N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+          E1 - OSPF external type 1, E2 - OSPF external type 2
+          i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+          ia - IS-IS inter area, * - candidate default, U - per-user static route
+          o - ODR, P - periodic downloaded static route
+   
+   Gateway of last resort is not set
+   
+        172.16.0.0/24 is subnetted, 1 subnets
+   C       172.16.1.0 is directly connected, Serial0/0
+   S    10.0.0.0/8 [1/0] via 172.16.1.2
+
+この状態で PC1 から 172.16.1.3 への ping を打ったとする。
+R1 はデフォルトルートの設定がない。
+したがってルーティングテーブルにも合致するものがないため、ping が失敗する。
+
+.. code-block: shell-session
+
+   PC1> ping 172.16.1.3
+   *10.1.1.1 icmp_seq=1 ttl=255 time=9.397 ms (ICMP type:3, code:1, Destination host unreachable)
+   *10.1.1.1 icmp_seq=2 ttl=255 time=10.635 ms (ICMP type:3, code:1, Destination host unreachable)
+   *10.1.1.1 icmp_seq=3 ttl=255 time=5.600 ms (ICMP type:3, code:1, Destination host unreachable)
+   *10.1.1.1 icmp_seq=4 ttl=255 time=8.566 ms (ICMP type:3, code:1, Destination host unreachable)
+   *10.1.1.1 icmp_seq=5 ttl=255 time=4.122 ms (ICMP type:3, code:1, Destination host unreachable)
+
+ここで OSPF のデフォルトルートの配布の設定をおこなう。
+LSA タイプ5 でアドバタイズされる。
+``always`` オプションはデフォルトルートが自分にあるなしにかかわらず OSPF デフォルトルートを生成する。
+
+R2
+
+.. code-block: shell-session
+
+   conf t
+   router ospf 1
+   default-information originate
+   end
+
+.. code-block: shell-session
+
+   R1#sh ip route
+   Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
+          D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+          N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+          E1 - OSPF external type 1, E2 - OSPF external type 2
+          i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+          ia - IS-IS inter area, * - candidate default, U - per-user static route
+          o - ODR, P - periodic downloaded static route
+   
+   Gateway of last resort is 10.2.2.2 to network 0.0.0.0
+   
+        10.0.0.0/24 is subnetted, 2 subnets
+   C       10.2.2.0 is directly connected, FastEthernet0/0
+   C       10.1.1.0 is directly connected, FastEthernet0/1
+   O*E2 0.0.0.0/0 [110/1] via 10.2.2.2, 00:00:05, FastEthernet0/0
+
+ルーティングテーブルに OSPF によるデフォルトルートが載った。
+当然 ping は成功する。
+
+.. code-block: shell-session
+
+   PC1> ping 172.16.1.3
+   84 bytes from 172.16.1.3 icmp_seq=1 ttl=253 time=31.069 ms
+   84 bytes from 172.16.1.3 icmp_seq=2 ttl=253 time=11.539 ms
+   84 bytes from 172.16.1.3 icmp_seq=3 ttl=253 time=21.419 ms
+   84 bytes from 172.16.1.3 icmp_seq=4 ttl=253 time=13.561 ms
+   84 bytes from 172.16.1.3 icmp_seq=5 ttl=253 time=13.081 ms
+
+.. code-block: shell-session
+
+   R3#ping 10.1.1.11
+   
+   Type escape sequence to abort.
+   Sending 5, 100-byte ICMP Echos to 10.1.1.11, timeout is 2 seconds:
+   !!!!!
+   Success rate is 100 percent (5/5), round-trip min/avg/max = 16/20/24 ms
