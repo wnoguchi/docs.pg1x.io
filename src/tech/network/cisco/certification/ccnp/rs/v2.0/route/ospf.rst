@@ -1780,8 +1780,6 @@ Do Not Age(DNA)
 サブインターフェイスは物理インターフェイスが up/up ならデフォルトで up/up となる。
 シャットダウンするときは明示的に shutdown しなければならない。
 
-WIP
-
 R1
 
 .. code-block:: IOS
@@ -2029,3 +2027,325 @@ ABR である R2 のルート集約を設定する。
    
      1 10.1.23.2 16 msec 4 msec 16 msec
      2 10.0.12.1 12 msec 8 msec 12 msec
+
+経路集約の設定の確認
+
+.. code-block: shell-session
+
+   R2#sh ip ospf
+    Routing Process "ospf 1" with ID 10.1.23.2
+    Start time: 00:00:58.448, Time elapsed: 00:35:13.328
+    Supports only single TOS(TOS0) routes
+    Supports opaque LSA
+    Supports Link-local Signaling (LLS)
+    Supports area transit capability
+    It is an area border router
+    Router is not originating router-LSAs with maximum metric
+    Initial SPF schedule delay 5000 msecs
+    Minimum hold time between two consecutive SPFs 10000 msecs
+    Maximum wait time between two consecutive SPFs 10000 msecs
+    Incremental-SPF disabled
+    Minimum LSA interval 5 secs
+    Minimum LSA arrival 1000 msecs
+    LSA group pacing timer 240 secs
+    Interface flood pacing timer 33 msecs
+    Retransmission pacing timer 66 msecs
+    Number of external LSA 0. Checksum Sum 0x000000
+    Number of opaque AS LSA 0. Checksum Sum 0x000000
+    Number of DCbitless external and opaque AS LSA 0
+    Number of DoNotAge external and opaque AS LSA 0
+    Number of areas in this router is 2. 2 normal 0 stub 0 nssa
+    Number of areas transit capable is 0
+    External flood list length 0
+    IETF NSF helper support enabled
+    Cisco NSF helper support enabled
+       Area BACKBONE(0)
+           Number of interfaces in this area is 1
+           Area has no authentication
+           SPF algorithm last executed 00:27:39.476 ago
+           SPF algorithm executed 5 times
+           Area ranges are
+              172.16.0.0/21 Active(74) Advertise
+           Number of LSA 4. Checksum Sum 0x02731E
+           Number of opaque link LSA 0. Checksum Sum 0x000000
+           Number of DCbitless LSA 0
+           Number of indication LSA 0
+           Number of DoNotAge LSA 0
+           Flood list length 0
+       Area 1
+           Number of interfaces in this area is 1
+           Area has no authentication
+           SPF algorithm last executed 00:27:39.480 ago
+           SPF algorithm executed 5 times
+           Area ranges are
+              172.16.8.0/21 Active(20) Advertise
+           Number of LSA 5. Checksum Sum 0x038872
+           Number of opaque link LSA 0. Checksum Sum 0x000000
+           Number of DCbitless LSA 0
+           Number of indication LSA 0
+           Number of DoNotAge LSA 0
+           Flood list length 0
+
+=======================================================================================
+ASBR による外部経路集約(External Route Summarization)
+=======================================================================================
+
+.. image:: img/ospf-ext-route-summarization-topology.png
+   :alt: OSPF ASBR 外部経路集約
+
+R1
+
+.. code-block:: IOS
+
+   conf t
+   ! interface configuration
+   int fa0/1
+   no shut
+   int fa0/1.1
+   encapsulation dot1Q 1
+   ip address 172.16.0.1 255.255.255.0
+   int fa0/1.2
+   encapsulation dot1Q 2
+   ip address 172.16.1.1 255.255.255.0
+   int fa0/1.3
+   encapsulation dot1Q 3
+   ip address 172.16.2.1 255.255.255.0
+   int s0/0
+   ip address 172.16.12.1 255.255.255.0
+   no shut
+   !
+   ! RIPv2 configuration
+   router rip
+   version 2
+   network 172.16.0.0
+   no auto-summary
+   exit
+   !
+   end
+   wr
+
+R2
+
+.. code-block:: IOS
+
+   conf t
+   ! interface configuration
+   int s0/0
+   ip address 172.16.12.2 255.255.255.0
+   no shut
+   int fa0/0
+   ip address 10.0.23.2 255.255.255.0
+   no shut
+   !
+   ! RIPv2 configuration
+   !
+   router rip
+   version 2
+   ! Redistribute OSPF Route to RIP
+   redistribute ospf 1 metric 5
+   network 172.16.0.0
+   no auto-summary
+   !
+   ! OSPF configuration
+   router ospf 1
+   network 10.0.0.0 0.0.255.255 area 0
+   ! Redistribute RIP Route to OSPF
+   redistribute rip subnets
+   exit
+   !
+   end
+   wr
+
+R3
+
+.. code-block:: IOS
+
+   conf t
+   ! interface configuration
+   int fa0/0
+   ip address 10.0.23.3 255.255.255.0
+   no shut
+   int fa0/1
+   ip address 10.0.1.3 255.255.255.0
+   no shut
+   !
+   ! OSPF configuration
+   router ospf 1
+   network 10.0.0.0 0.255.255.255 area 0
+   exit
+   !
+   end
+   wr
+
+PC1::
+
+   ip 10.0.1.1 255.255.255.0 10.0.1.3
+   save
+
+ここまでは ASBR でのルート集約前
+
+動作確認
+
+.. code-block: shell-session
+
+   PC1> ping 172.16.0.1
+   84 bytes from 172.16.0.1 icmp_seq=1 ttl=253 time=11.175 ms
+   84 bytes from 172.16.0.1 icmp_seq=2 ttl=253 time=18.722 ms
+   84 bytes from 172.16.0.1 icmp_seq=3 ttl=253 time=30.929 ms
+   84 bytes from 172.16.0.1 icmp_seq=4 ttl=253 time=14.565 ms
+   84 bytes from 172.16.0.1 icmp_seq=5 ttl=253 time=24.611 ms
+
+ルーティングテーブル確認
+
+.. code-block: shell-session
+
+   R1#sh ip route
+   Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
+          D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+          N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+          E1 - OSPF external type 1, E2 - OSPF external type 2
+          i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+          ia - IS-IS inter area, * - candidate default, U - per-user static route
+          o - ODR, P - periodic downloaded static route
+   
+   Gateway of last resort is not set
+   
+        172.16.0.0/24 is subnetted, 4 subnets
+   C       172.16.12.0 is directly connected, Serial0/0
+   C       172.16.0.0 is directly connected, FastEthernet0/1.1
+   C       172.16.1.0 is directly connected, FastEthernet0/1.2
+   C       172.16.2.0 is directly connected, FastEthernet0/1.3
+        10.0.0.0/24 is subnetted, 2 subnets
+   R       10.0.1.0 [120/5] via 172.16.12.2, 00:00:11, Serial0/0
+R       10.0.23.0 [120/5] via 172.16.12.2, 00:00:17, Serial0/0
+
+.. code-block: shell-session
+
+   R2#sh ip route
+   Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
+          D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+          N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+          E1 - OSPF external type 1, E2 - OSPF external type 2
+          i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+          ia - IS-IS inter area, * - candidate default, U - per-user static route
+          o - ODR, P - periodic downloaded static route
+   
+   Gateway of last resort is not set
+   
+        172.16.0.0/24 is subnetted, 4 subnets
+   C       172.16.12.0 is directly connected, Serial0/0
+   R       172.16.0.0 [120/1] via 172.16.12.1, 00:00:19, Serial0/0
+   R       172.16.1.0 [120/1] via 172.16.12.1, 00:00:19, Serial0/0
+   R       172.16.2.0 [120/1] via 172.16.12.1, 00:00:19, Serial0/0
+        10.0.0.0/24 is subnetted, 2 subnets
+   O       10.0.1.0 [110/20] via 10.0.23.3, 00:00:10, FastEthernet0/0
+   C       10.0.23.0 is directly connected, FastEthernet0/0
+
+.. code-block: shell-session
+
+   R3#sh ip route
+   Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
+          D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+          N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+          E1 - OSPF external type 1, E2 - OSPF external type 2
+          i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+          ia - IS-IS inter area, * - candidate default, U - per-user static route
+          o - ODR, P - periodic downloaded static route
+   
+   Gateway of last resort is not set
+   
+        172.16.0.0/24 is subnetted, 4 subnets
+   O E2    172.16.12.0 [110/20] via 10.0.23.2, 00:00:06, FastEthernet0/0
+   O E2    172.16.0.0 [110/20] via 10.0.23.2, 00:00:06, FastEthernet0/0
+   O E2    172.16.1.0 [110/20] via 10.0.23.2, 00:00:06, FastEthernet0/0
+   O E2    172.16.2.0 [110/20] via 10.0.23.2, 00:00:06, FastEthernet0/0
+        10.0.0.0/24 is subnetted, 2 subnets
+   C       10.0.1.0 is directly connected, FastEthernet0/1
+   C       10.0.23.0 is directly connected, FastEthernet0/0
+
+では外部経路の集約を行う。
+
+.. code-block:: IOS
+
+   conf t
+   router ospf 1
+   summary-address 172.16.0.0 255.255.0.0
+   end
+
+集約後のルーティングテーブルは以下のようになる。
+スッキリ。
+
+.. code-block: shell-session
+
+   R1#sh ip route
+   Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
+          D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+          N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+          E1 - OSPF external type 1, E2 - OSPF external type 2
+          i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+          ia - IS-IS inter area, * - candidate default, U - per-user static route
+          o - ODR, P - periodic downloaded static route
+   
+   Gateway of last resort is not set
+   
+        172.16.0.0/16 is variably subnetted, 5 subnets, 2 masks
+   C       172.16.12.0/24 is directly connected, Serial0/0
+   C       172.16.0.0/24 is directly connected, FastEthernet0/1.1
+   R       172.16.0.0/16 [120/5] via 172.16.12.2, 00:00:01, Serial0/0
+   C       172.16.1.0/24 is directly connected, FastEthernet0/1.2
+   C       172.16.2.0/24 is directly connected, FastEthernet0/1.3
+        10.0.0.0/24 is subnetted, 2 subnets
+   R       10.0.1.0 [120/5] via 172.16.12.2, 00:00:01, Serial0/0
+   R       10.0.23.0 [120/5] via 172.16.12.2, 00:00:02, Serial0/0
+
+.. code-block: shell-session
+
+   R2#sh ip route
+   Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
+          D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+          N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+          E1 - OSPF external type 1, E2 - OSPF external type 2
+          i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+          ia - IS-IS inter area, * - candidate default, U - per-user static route
+          o - ODR, P - periodic downloaded static route
+   
+   Gateway of last resort is not set
+   
+        172.16.0.0/16 is variably subnetted, 5 subnets, 2 masks
+   C       172.16.12.0/24 is directly connected, Serial0/0
+   R       172.16.0.0/24 [120/1] via 172.16.12.1, 00:00:25, Serial0/0
+   O       172.16.0.0/16 is a summary, 00:00:34, Null0
+   R       172.16.1.0/24 [120/1] via 172.16.12.1, 00:00:25, Serial0/0
+   R       172.16.2.0/24 [120/1] via 172.16.12.1, 00:00:25, Serial0/0
+        10.0.0.0/24 is subnetted, 2 subnets
+   O       10.0.1.0 [110/20] via 10.0.23.3, 00:01:25, FastEthernet0/0
+   C       10.0.23.0 is directly connected, FastEthernet0/0
+
+.. code-block: shell-session
+
+   R3#sh ip route
+   Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
+          D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+          N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+          E1 - OSPF external type 1, E2 - OSPF external type 2
+          i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+          ia - IS-IS inter area, * - candidate default, U - per-user static route
+          o - ODR, P - periodic downloaded static route
+   
+   Gateway of last resort is not set
+   
+   O E2 172.16.0.0/16 [110/20] via 10.0.23.2, 00:00:24, FastEthernet0/0
+        10.0.0.0/24 is subnetted, 2 subnets
+   C       10.0.1.0 is directly connected, FastEthernet0/1
+   C       10.0.23.0 is directly connected, FastEthernet0/0
+
+===================================
+OSPF 経路集約まとめ
+===================================
+
+経路集約できるのは ABR または ASBR のみ。
+
+===================================
+OSPF デフォルトルート配布
+===================================
+
