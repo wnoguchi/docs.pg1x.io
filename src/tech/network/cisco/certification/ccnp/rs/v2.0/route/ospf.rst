@@ -2534,3 +2534,180 @@ R2
    Sending 5, 100-byte ICMP Echos to 10.1.1.11, timeout is 2 seconds:
    !!!!!
    Success rate is 100 percent (5/5), round-trip min/avg/max = 16/20/24 ms
+
+.. code-block:: shell-session
+
+   R2#sh ip ospf database
+   
+               OSPF Router with ID (172.16.1.2) (Process ID 1)
+   
+                   Router Link States (Area 0)
+   
+   Link ID         ADV Router      Age         Seq#       Checksum Link count
+   10.2.2.1        10.2.2.1        355         0x80000003 0x00D9EA 2
+   172.16.1.2      172.16.1.2      311         0x80000004 0x007D08 1
+   
+                   Net Link States (Area 0)
+   
+   Link ID         ADV Router      Age         Seq#       Checksum
+   10.2.2.2        172.16.1.2      354         0x80000001 0x003A61
+   
+                   Type-5 AS External Link States
+   
+   Link ID         ADV Router      Age         Seq#       Checksum Tag
+   0.0.0.0         172.16.1.2      311         0x80000001 0x00955D 1
+
+.. code-block:: shell-session
+
+   R1#sh ip route
+   Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
+          D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+          N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+          E1 - OSPF external type 1, E2 - OSPF external type 2
+          i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+          ia - IS-IS inter area, * - candidate default, U - per-user static route
+          o - ODR, P - periodic downloaded static route
+   
+   Gateway of last resort is 10.2.2.2 to network 0.0.0.0
+   
+        10.0.0.0/24 is subnetted, 2 subnets
+   C       10.2.2.0 is directly connected, FastEthernet0/0
+   C       10.1.1.0 is directly connected, FastEthernet0/1
+   O*E2 0.0.0.0/0 [110/1] via 10.2.2.2, 00:05:47, FastEthernet0/0
+
+では、今度は ``always`` オプションを付けてみよう。
+まず、デフォルトルートを削除する。
+
+R2(CE)
+
+.. code-block:: IOS
+
+   conf t
+   no ip route 0.0.0.0 0.0.0.0
+
+.. code-block:: shell-session
+
+   R2#conf t
+   Enter configuration commands, one per line.  End with CNTL/Z.
+   R2(config)#no ip route 0.0.0.0 0.0.0.0
+   R2(config)#do sh ip route
+   Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
+          D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+          N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+          E1 - OSPF external type 1, E2 - OSPF external type 2
+          i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+          ia - IS-IS inter area, * - candidate default, U - per-user static route
+          o - ODR, P - periodic downloaded static route
+   
+   Gateway of last resort is not set
+   
+        172.16.0.0/24 is subnetted, 1 subnets
+   C       172.16.1.0 is directly connected, Serial0/0
+        10.0.0.0/24 is subnetted, 2 subnets
+   C       10.2.2.0 is directly connected, FastEthernet0/0
+   O       10.1.1.0 [110/20] via 10.2.2.1, 00:16:08, FastEthernet0/0
+   
+   R1#sh ip route
+   Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
+          D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+          N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+          E1 - OSPF external type 1, E2 - OSPF external type 2
+          i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+          ia - IS-IS inter area, * - candidate default, U - per-user static route
+          o - ODR, P - periodic downloaded static route
+   
+   Gateway of last resort is not set
+   
+        10.0.0.0/24 is subnetted, 2 subnets
+   C       10.2.2.0 is directly connected, FastEthernet0/0
+   C       10.1.1.0 is directly connected, FastEthernet0/1
+
+.. code-block:: IOS
+
+   conf t
+   router ospf 1
+   default-information originate always
+
+.. code-block:: shell-session
+
+   R2(config)#router ospf 1
+   R2(config-router)#defau
+   R2(config-router)#default-info
+   R2(config-router)#default-information ori
+   R2(config-router)#default-information originate ?
+     always       Always advertise default route
+     metric       OSPF default metric
+     metric-type  OSPF metric type for default routes
+     route-map    Route-map reference
+     <cr>
+   
+   R2(config-router)#default-information originate alwa
+   R2(config-router)#default-information originate always
+   R2(config-router)#^Z
+   R2#
+   *Mar  1 00:18:43.163: %SYS-5-CONFIG_I: Configured from console by console
+
+.. code-block:: shell-session
+
+   R1#sh ip route
+   Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
+          D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+          N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+          E1 - OSPF external type 1, E2 - OSPF external type 2
+          i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+          ia - IS-IS inter area, * - candidate default, U - per-user static route
+          o - ODR, P - periodic downloaded static route
+   
+   Gateway of last resort is 10.2.2.2 to network 0.0.0.0
+   
+        10.0.0.0/24 is subnetted, 2 subnets
+   C       10.2.2.0 is directly connected, FastEthernet0/0
+   C       10.1.1.0 is directly connected, FastEthernet0/1
+   O*E2 0.0.0.0/0 [110/1] via 10.2.2.2, 00:00:08, FastEthernet0/0
+
+.. code-block:: shell-session
+
+   R2#sh ip route
+   Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
+          D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+          N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+          E1 - OSPF external type 1, E2 - OSPF external type 2
+          i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+          ia - IS-IS inter area, * - candidate default, U - per-user static route
+          o - ODR, P - periodic downloaded static route
+   
+   Gateway of last resort is not set
+   
+        172.16.0.0/24 is subnetted, 1 subnets
+   C       172.16.1.0 is directly connected, Serial0/0
+        10.0.0.0/24 is subnetted, 2 subnets
+   C       10.2.2.0 is directly connected, FastEthernet0/0
+   O       10.1.1.0 [110/20] via 10.2.2.1, 00:18:09, FastEthernet0/0
+
+R2 の LSDB を確認してみる。
+
+.. code-block:: shell-session
+
+   R2#sh ip ospf database
+   
+               OSPF Router with ID (172.16.1.2) (Process ID 1)
+   
+                   Router Link States (Area 0)
+   
+   Link ID         ADV Router      Age         Seq#       Checksum Link count
+   10.2.2.1        10.2.2.1        1191        0x80000003 0x00D9EA 2
+   172.16.1.2      172.16.1.2      1147        0x80000004 0x007D08 1
+   
+                   Net Link States (Area 0)
+   
+   Link ID         ADV Router      Age         Seq#       Checksum
+   10.2.2.2        172.16.1.2      1190        0x80000001 0x003A61
+   
+                   Type-5 AS External Link States
+   
+   Link ID         ADV Router      Age         Seq#       Checksum Tag
+   0.0.0.0         172.16.1.2      120         0x80000001 0x00955D 1
+
+===================================================================
+パッシブインターフェイス(Passive Interface)
+===================================================================
