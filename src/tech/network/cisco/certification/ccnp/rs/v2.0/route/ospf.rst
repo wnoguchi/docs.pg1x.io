@@ -2711,3 +2711,155 @@ R2 の LSDB を確認してみる。
 ===================================================================
 パッシブインターフェイス(Passive Interface)
 ===================================================================
+
+.. image:: img/ospf-passive-interface.png
+
+R1
+
+.. code-block:: IOS
+
+   conf t
+   ! interface configuration
+   int fa0/1
+   no shut
+   int fa0/1.1
+   encapsulation dot1Q 1
+   ip address 172.16.0.1 255.255.255.0
+   int fa0/1.2
+   encapsulation dot1Q 2
+   ip address 172.16.1.1 255.255.255.0
+   int fa0/1.3
+   encapsulation dot1Q 3
+   ip address 172.16.2.1 255.255.255.0
+   int s0/0
+   ip address 172.16.12.1 255.255.255.0
+   no shut
+   !
+   ! OSPF configuration
+   router ospf 1
+   network 172.16.0.0 0.0.255.255 area 0
+   exit
+   !
+   end
+   wr
+
+R2
+
+.. code-block:: IOS
+
+   conf t
+   ! interface configuration
+   int s0/0
+   ip address 172.16.12.2 255.255.255.0
+   no shut
+   int fa0/0
+   ip address 172.16.23.2 255.255.255.0
+   no shut
+   !
+   ! OSPF configuration
+   router ospf 1
+   network 172.16.0.0 0.0.255.255 area 0
+   exit
+   !
+   ! OSPF configuration
+   router ospf 1
+   network 172.16.0.0 0.0.255.255 area 0
+   exit
+   !
+   end
+   wr
+
+R3
+
+.. code-block:: IOS
+
+   conf t
+   ! interface configuration
+   int fa0/0
+   ip address 172.16.23.3 255.255.255.0
+   no shut
+   int fa0/1
+   ip address 172.16.3.3 255.255.255.0
+   no shut
+   exit
+   !
+   ! OSPF configuration
+   router ospf 1
+   network 172.16.0.0 0.0.255.255 area 0
+   exit
+   !
+   end
+   wr
+
+PC1::
+
+   ip 172.16.3.31 255.255.255.0 172.16.3.3
+   save
+
+動作確認。この段階では Passive Interface は設定されていない。
+
+.. code-block:: shell-session
+
+   R1#sh ip route
+   Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
+          D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+          N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+          E1 - OSPF external type 1, E2 - OSPF external type 2
+          i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+          ia - IS-IS inter area, * - candidate default, U - per-user static route
+          o - ODR, P - periodic downloaded static route
+   
+   Gateway of last resort is not set
+   
+        172.16.0.0/24 is subnetted, 6 subnets
+   O       172.16.23.0 [110/74] via 172.16.12.2, 00:00:24, Serial0/0
+   C       172.16.12.0 is directly connected, Serial0/0
+   C       172.16.0.0 is directly connected, FastEthernet0/1.1
+   C       172.16.1.0 is directly connected, FastEthernet0/1.2
+   C       172.16.2.0 is directly connected, FastEthernet0/1.3
+   O       172.16.3.0 [110/84] via 172.16.12.2, 00:00:14, Serial0/0
+
+.. code-block:: shell-session
+
+   R2#sh ip route
+   Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
+          D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+          N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+          E1 - OSPF external type 1, E2 - OSPF external type 2
+          i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+          ia - IS-IS inter area, * - candidate default, U - per-user static route
+          o - ODR, P - periodic downloaded static route
+   
+   Gateway of last resort is not set
+   
+        172.16.0.0/24 is subnetted, 6 subnets
+   C       172.16.23.0 is directly connected, FastEthernet0/0
+   C       172.16.12.0 is directly connected, Serial0/0
+   O       172.16.0.0 [110/74] via 172.16.12.1, 00:00:53, Serial0/0
+   O       172.16.1.0 [110/74] via 172.16.12.1, 00:00:53, Serial0/0
+   O       172.16.2.0 [110/74] via 172.16.12.1, 00:00:53, Serial0/0
+   O       172.16.3.0 [110/20] via 172.16.23.3, 00:00:15, FastEthernet0/0
+
+.. code-block:: shell-session
+
+   R3#sh ip route
+   Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
+          D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+          N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+          E1 - OSPF external type 1, E2 - OSPF external type 2
+          i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+          ia - IS-IS inter area, * - candidate default, U - per-user static route
+          o - ODR, P - periodic downloaded static route
+   
+   Gateway of last resort is not set
+   
+        172.16.0.0/24 is subnetted, 6 subnets
+   C       172.16.23.0 is directly connected, FastEthernet0/0
+   O       172.16.12.0 [110/74] via 172.16.23.2, 00:00:20, FastEthernet0/0
+   O       172.16.0.0 [110/84] via 172.16.23.2, 00:00:20, FastEthernet0/0
+   O       172.16.1.0 [110/84] via 172.16.23.2, 00:00:20, FastEthernet0/0
+   O       172.16.2.0 [110/84] via 172.16.23.2, 00:00:20, FastEthernet0/0
+   C       172.16.3.0 is directly connected, FastEthernet0/1
+
+こっから本題。
+Passive Interface を設定する。
