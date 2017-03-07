@@ -2862,4 +2862,156 @@ PC1::
    C       172.16.3.0 is directly connected, FastEthernet0/1
 
 こっから本題。
+
 Passive Interface を設定する。
+
+R1
+
+.. code-block:: IOS
+
+   router ospf 1
+   passive-interface default
+   no passive-interface s0/0
+
+R3
+
+.. code-block:: IOS
+
+   router ospf 1
+   passive-interface f0/1
+
+ここ debug コマンドで見てみる
+
+.. code-block:: IOS
+
+   debug ip ospf hello
+
+.. code-block:: shell-session
+
+   R1(config-router)#do debug ip ospf hello
+   OSPF hello events debugging is on
+   R1(config-router)#
+   *Mar  1 00:10:06.839: OSPF: Rcv hello from 172.16.23.2 area 0 from Serial0/0 172.16.12.2
+   *Mar  1 00:10:06.839: OSPF: End of hello processing
+   R1(config-router)#
+   *Mar  1 00:10:13.431: OSPF: Send hello to 224.0.0.5 area 0 on Serial0/0 from 172.16.12.1
+   R1(config-router)#
+   *Mar  1 00:10:16.623: OSPF: Rcv hello from 172.16.23.2 area 0 from Serial0/0 172.16.12.2
+   *Mar  1 00:10:16.623: OSPF: End of hello processing
+   R1(config-router)#
+   *Mar  1 00:10:22.635: OSPF: Send hello to 224.0.0.5 area 0 on Serial0/0 from 172.16.12.1
+   R1(config-router)#
+   *Mar  1 00:10:25.899: OSPF: Rcv hello from 172.16.23.2 area 0 from Serial0/0 172.16.12.2
+   *Mar  1 00:10:25.899: OSPF: End of hello processing
+
+.. code-block:: shell-session
+
+   R3(config-router)#do debug ip ospf hello
+   OSPF hello events debugging is on
+   R3(config-router)#
+   *Mar  1 00:10:03.747: OSPF: Send hello to 224.0.0.5 area 0 on FastEthernet0/0 from 172.16.23.3
+   R3(config-router)#
+   *Mar  1 00:10:08.827: OSPF: Rcv hello from 172.16.23.2 area 0 from FastEthernet0/0 172.16.23.2
+   *Mar  1 00:10:08.827: OSPF: End of hello processing
+   R3(config-router)#
+   *Mar  1 00:10:13.659: OSPF: Send hello to 224.0.0.5 area 0 on FastEthernet0/0 from 172.16.23.3
+   R3(config-router)#
+   *Mar  1 00:10:18.211: OSPF: Rcv hello from 172.16.23.2 area 0 from FastEthernet0/0 172.16.23.2
+   *Mar  1 00:10:18.211: OSPF: End of hello processing
+   R3(config-router)#
+   *Mar  1 00:10:23.479: OSPF: Send hello to 224.0.0.5 area 0 on FastEthernet0/0 from 172.16.23.3
+   R3(config-router)#
+   *Mar  1 00:10:27.491: OSPF: Rcv hello from 172.16.23.2 area 0 from FastEthernet0/0 172.16.23.2
+   *Mar  1 00:10:27.491: OSPF: End of hello processing
+   R3(config-router)#
+   *Mar  1 00:10:32.959: OSPF: Send hello to 224.0.0.5 area 0 on FastEthernet0/0 from 172.16.23.3
+   R3(config-router)#
+   *Mar  1 00:10:37.335: OSPF: Rcv hello from 172.16.23.2 area 0 from FastEthernet0/0 172.16.23.2
+   *Mar  1 00:10:37.335: OSPF: End of hello processing
+
+`s0/0`, `f0/0` でのみ OSPF Hello パケットを送受信していることがわかる。
+
+では、ここでもとに戻してみる。
+
+R1
+
+.. code-block:: IOS
+
+   router ospf 1
+   no passive-interface default
+
+R3
+
+.. code-block:: IOS
+
+   router ospf 1
+   no passive-interface f0/1
+
+   R1(config-router)#no passive-interface de
+   *Mar  1 00:13:55.491: OSPF: Rcv hello from 172.16.23.2 area 0 from Serial0/0 172.16.12.2
+   *Mar  1 00:13:55.491: OSPF: End of hello processing
+   R1(config-router)#no passive-interface defau
+   R1(config-router)#no passive-interface default
+   R1(config-router)#
+   *Mar  1 00:13:58.571: OSPF: Send hello to 224.0.0.5 area 0 on FastEthernet0/1.1 from 172.16.0.1
+   *Mar  1 00:13:58.571: OSPF: Send hello to 224.0.0.5 area 0 on FastEthernet0/1.2 from 172.16.1.1
+   *Mar  1 00:13:58.571: OSPF: Send hello to 224.0.0.5 area 0 on FastEthernet0/1.3 from 172.16.2.1
+   R1(config-router)#
+   *Mar  1 00:14:03.011: OSPF: Send hello to 224.0.0.5 area 0 on Serial0/0 from 172.16.12.1
+   R1(config-router)#
+   *Mar  1 00:14:05.439: OSPF: Rcv hello from 172.16.23.2 area 0 from Serial0/0 172.16.12.2
+   *Mar  1 00:14:05.439: OSPF: End of hello processing
+   R1(config-router)#
+   *Mar  1 00:14:07.683: OSPF: Send hello to 224.0.0.5 area 0 on FastEthernet0/1.1 from 172.16.0.1
+   *Mar  1 00:14:07.991: OSPF: Send hello to 224.0.0.5 area 0 on FastEthernet0/1.3 from 172.16.2.1
+   *Mar  1 00:14:08.179: OSPF: Send hello to 224.0.0.5 area 0 on FastEthernet0/1.2 from 172.16.1.1
+   R1(config-router)#
+   *Mar  1 00:14:12.391: OSPF: Send hello to 224.0.0.5 area 0 on Serial0/0 from 172.16.12.1
+   R1(config-router)#
+   *Mar  1 00:14:15.023: OSPF: Rcv hello from 172.16.23.2 area 0 from Serial0/0 172.16.12.2
+   *Mar  1 00:14:15.023: OSPF: End of hello processing
+   R1(config-router)#
+   *Mar  1 00:14:17.327: OSPF: Send hello to 224.0.0.5 area 0 on FastEthernet0/1.1 from 172.16.0.1
+   *Mar  1 00:14:17.491: OSPF: Send hello to 224.0.0.5 area 0 on FastEthernet0/1.3 from 172.16.2.1
+   *Mar  1 00:14:17.879: OSPF: Send hello to 224.0.0.5 area 0 on FastEthernet0/1.2 from 172.16.1.1
+   R1(config-router)#
+   *Mar  1 00:14:22.271: OSPF: Send hello to 224.0.0.5 area 0 on Serial0/0 from 172.16.12.1
+   R1(config-router)#
+   
+   R3(config-router)#no passive-interface f0/1
+   R3(config-router)#
+   *Mar  1 00:14:09.811: OSPF: Send hello to 224.0.0.5 area 0 on FastEthernet0/1 from 172.16.3.3
+   R3(config-router)#
+   *Mar  1 00:14:12.115: OSPF: Send hello to 224.0.0.5 area 0 on FastEthernet0/0 from 172.16.23.3
+   R3(config-router)#
+   *Mar  1 00:14:15.527: OSPF: Rcv hello from 172.16.23.2 area 0 from FastEthernet0/0 172.16.23.2
+   *Mar  1 00:14:15.527: OSPF: End of hello processing
+   R3(config-router)#
+   *Mar  1 00:14:19.127: OSPF: Send hello to 224.0.0.5 area 0 on FastEthernet0/1 from 172.16.3.3
+   R3(config-router)#
+   *Mar  1 00:14:21.579: OSPF: Send hello to 224.0.0.5 area 0 on FastEthernet0/0 from 172.16.23.3
+   R3(config-router)#
+   *Mar  1 00:14:25.179: OSPF: Rcv hello from 172.16.23.2 area 0 from FastEthernet0/0 172.16.23.2
+   *Mar  1 00:14:25.179: OSPF: End of hello processing
+   R3(config-router)#
+   *Mar  1 00:14:28.587: OSPF: Send hello to 224.0.0.5 area 0 on FastEthernet0/1 from 172.16.3.3
+   R3(config-router)#
+   *Mar  1 00:14:30.599: OSPF: Send hello to 224.0.0.5 area 0 on FastEthernet0/0 from 172.16.23.3
+   R3(config-router)#
+   *Mar  1 00:14:34.915: OSPF: Rcv hello from 172.16.23.2 area 0 from FastEthernet0/0 172.16.23.2
+   *Mar  1 00:14:34.915: OSPF: End of hello processing
+
+すべてのインターフェイスで Hello パケットが送受信されていることがわかる。
+無駄ですね。
+
+終わったので止める。
+
+.. code-block:: IOS
+
+   no debug all
+
+================================================================================================
+ループバックインターフェイスのアドバタイズ(Loopback Interface Advertise)
+================================================================================================
+
+.. image:: img/ospf-loopback-advertise-topology.png
