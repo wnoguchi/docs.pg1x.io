@@ -3232,3 +3232,85 @@ R1, R2
      Last flood scan time is 0 msec, maximum is 0 msec
      Neighbor Count is 0, Adjacent neighbor count is 0
      Suppress hello for 0 neighbor(s)
+
+==================================================================
+Hello/Dead インターバルの変更
+==================================================================
+
+.. image:: img/ospf-change-hello-dead-interval-topology.png
+
+R1
+
+.. code-block:: IOS
+
+   conf t
+   ! interface configuration
+   int fa0/0
+   ip address 172.16.1.1 255.255.255.0
+   no shut
+   int s0/0
+   ip address 172.16.2.1 255.255.255.0
+   no shut
+   int lo0
+   ip address 10.1.1.1 255.255.255.0
+   !
+   ! OSPF configuration
+   router ospf 1
+   network 172.16.0.0 0.0.255.255 area 0
+   network 10.1.1.0 0.0.0.255 area 0
+   exit
+   !
+   end
+   wr
+
+R2
+
+.. code-block:: IOS
+
+   conf t
+   ! interface configuration
+   int s0/0
+   ip address 172.16.2.2 255.255.255.0
+   no shut
+   int fa0/0
+   ip address 172.16.3.2 255.255.255.0
+   no shut
+   int lo0
+   ip address 10.2.2.2 255.255.255.0
+   !
+   ! OSPF configuration
+   router ospf 1
+   network 172.16.0.0 0.0.255.255 area 0
+   network 10.2.2.0 0.0.0.255 area 0
+   exit
+   !
+   end
+   wr
+
+PC1
+
+.. code-block:: text
+
+   ip 172.16.1.11 255.255.255.0 172.16.1.1
+   save
+
+PC2
+
+.. code-block:: text
+
+   ip 172.16.3.22 255.255.255.0 172.16.3.2
+   save
+
+Hello/Dead インターバルを変更する。
+
+R1
+
+.. code-block:: IOS
+
+   conf t
+   int s0/0
+   ip ospf hello-interval 20
+
+.. code-block:: shell-session
+
+   debug ip ospf hello
