@@ -2947,6 +2947,8 @@ R3
    router ospf 1
    no passive-interface f0/1
 
+.. code-block:: shell-session
+
    R1(config-router)#no passive-interface de
    *Mar  1 00:13:55.491: OSPF: Rcv hello from 172.16.23.2 area 0 from Serial0/0 172.16.12.2
    *Mar  1 00:13:55.491: OSPF: End of hello processing
@@ -2977,7 +2979,9 @@ R3
    R1(config-router)#
    *Mar  1 00:14:22.271: OSPF: Send hello to 224.0.0.5 area 0 on Serial0/0 from 172.16.12.1
    R1(config-router)#
-   
+
+.. code-block:: shell-session
+
    R3(config-router)#no passive-interface f0/1
    R3(config-router)#
    *Mar  1 00:14:09.811: OSPF: Send hello to 224.0.0.5 area 0 on FastEthernet0/1 from 172.16.3.3
@@ -3015,3 +3019,216 @@ R3
 ================================================================================================
 
 .. image:: img/ospf-loopback-advertise-topology.png
+
+ループバックインターフェイスは ``/24`` で設定されていても OSPF では ``/32`` のプレフィックスでアドバタイズされる。
+
+R1
+
+.. code-block:: IOS
+
+   conf t
+   ! interface configuration
+   int fa0/0
+   ip address 172.16.1.1 255.255.255.0
+   no shut
+   int s0/0
+   ip address 172.16.2.1 255.255.255.0
+   no shut
+   int lo0
+   ip address 10.1.1.1 255.255.255.0
+   !
+   ! OSPF configuration
+   router ospf 1
+   network 172.16.0.0 0.0.255.255 area 0
+   network 10.1.1.0 0.0.0.255 area 0
+   exit
+   !
+   end
+   wr
+
+R2
+
+.. code-block:: IOS
+
+   conf t
+   ! interface configuration
+   int s0/0
+   ip address 172.16.2.2 255.255.255.0
+   no shut
+   int fa0/0
+   ip address 172.16.3.2 255.255.255.0
+   no shut
+   int lo0
+   ip address 10.2.2.2 255.255.255.0
+   !
+   ! OSPF configuration
+   router ospf 1
+   network 172.16.0.0 0.0.255.255 area 0
+   network 10.2.2.0 0.0.0.255 area 0
+   exit
+   !
+   end
+   wr
+
+PC1
+
+.. code-block:: text
+
+   ip 172.16.1.11 255.255.255.0 172.16.1.1
+   save
+
+PC2
+
+.. code-block:: text
+
+   ip 172.16.3.22 255.255.255.0 172.16.3.2
+   save
+
+設定後のルーティングテーブルを見ると OSPF ルートとして
+ループバックインターフェイスが /32 のプレフィックスで学習されていることがわかる。
+
+.. code-block:: shell-session
+
+   R1#sh ip route
+   Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
+          D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+          N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+          E1 - OSPF external type 1, E2 - OSPF external type 2
+          i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+          ia - IS-IS inter area, * - candidate default, U - per-user static route
+          o - ODR, P - periodic downloaded static route
+   
+   Gateway of last resort is not set
+   
+        172.16.0.0/24 is subnetted, 3 subnets
+   C       172.16.1.0 is directly connected, FastEthernet0/0
+   C       172.16.2.0 is directly connected, Serial0/0
+   O       172.16.3.0 [110/74] via 172.16.2.2, 00:00:49, Serial0/0
+        10.0.0.0/8 is variably subnetted, 2 subnets, 2 masks
+   O       10.2.2.2/32 [110/65] via 172.16.2.2, 00:00:49, Serial0/0
+   C       10.1.1.0/24 is directly connected, Loopback0
+
+.. code-block:: shell-session
+
+   R2#sh ip ro
+   Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
+          D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+          N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+          E1 - OSPF external type 1, E2 - OSPF external type 2
+          i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+          ia - IS-IS inter area, * - candidate default, U - per-user static route
+          o - ODR, P - periodic downloaded static route
+   
+   Gateway of last resort is not set
+   
+        172.16.0.0/24 is subnetted, 3 subnets
+   O       172.16.1.0 [110/74] via 172.16.2.1, 00:00:57, Serial0/0
+   C       172.16.2.0 is directly connected, Serial0/0
+   C       172.16.3.0 is directly connected, FastEthernet0/0
+        10.0.0.0/8 is variably subnetted, 2 subnets, 2 masks
+   C       10.2.2.0/24 is directly connected, Loopback0
+   O       10.1.1.1/32 [110/65] via 172.16.2.1, 00:00:57, Serial0/0
+
+ping 実行結果
+
+.. code-block:: shell-session
+
+   PC1> ping 172.16.3.2
+   84 bytes from 172.16.3.2 icmp_seq=1 ttl=254 time=31.100 ms
+   84 bytes from 172.16.3.2 icmp_seq=2 ttl=254 time=12.117 ms
+   84 bytes from 172.16.3.2 icmp_seq=3 ttl=254 time=4.570 ms
+   ^C
+   PC1> ping 172.16.3.22
+   172.16.3.22 icmp_seq=1 timeout
+   84 bytes from 172.16.3.22 icmp_seq=2 ttl=62 time=18.673 ms
+   84 bytes from 172.16.3.22 icmp_seq=3 ttl=62 time=15.604 ms
+   84 bytes from 172.16.3.22 icmp_seq=4 ttl=62 time=13.252 ms
+   84 bytes from 172.16.3.22 icmp_seq=5 ttl=62 time=7.581 ms
+   
+   PC1> ping 10.1.1.1
+   84 bytes from 10.1.1.1 icmp_seq=1 ttl=255 time=18.061 ms
+   84 bytes from 10.1.1.1 icmp_seq=2 ttl=255 time=4.046 ms
+   84 bytes from 10.1.1.1 icmp_seq=3 ttl=255 time=3.541 ms
+   ^C
+   PC1> ping 10.2.2.2
+   84 bytes from 10.2.2.2 icmp_seq=1 ttl=254 time=23.116 ms
+   84 bytes from 10.2.2.2 icmp_seq=2 ttl=254 time=9.663 ms
+   84 bytes from 10.2.2.2 icmp_seq=3 ttl=254 time=11.109 ms
+   84 bytes from 10.2.2.2 icmp_seq=4 ttl=254 time=6.033 ms
+   ^C
+
+ループバックインターフェイスに設定したサブネットマスクでアドバタイズしたい場合は
+ネットワークタイプを LOOPBACK からポイントツーポイントに変更する。
+
+.. code-block:: shell-session
+
+   R1#sh ip ospf int lo0
+   Loopback0 is up, line protocol is up
+     Internet Address 10.1.1.1/24, Area 0
+     Process ID 1, Router ID 10.1.1.1, Network Type LOOPBACK, Cost: 1
+     Loopback interface is treated as a stub Host
+
+.. code-block:: shell-session
+
+   R2#sh ip ospf int lo0
+   Loopback0 is up, line protocol is up
+     Internet Address 10.2.2.2/24, Area 0
+     Process ID 1, Router ID 10.2.2.2, Network Type LOOPBACK, Cost: 1
+     Loopback interface is treated as a stub Host
+
+R1, R2
+
+.. code-block:: IOS
+
+   conf t
+   int lo0
+   ip ospf network point-to-point
+   end
+
+.. code-block:: shell-session
+
+   R1#sh ip ro os
+        172.16.0.0/24 is subnetted, 3 subnets
+   O       172.16.3.0 [110/74] via 172.16.2.2, 00:01:09, Serial0/0
+        10.0.0.0/24 is subnetted, 2 subnets
+   O       10.2.2.0 [110/65] via 172.16.2.2, 00:00:10, Serial0/0
+   R1#sh ip os int lo0
+   Loopback0 is up, line protocol is up
+     Internet Address 10.1.1.1/24, Area 0
+     Process ID 1, Router ID 10.1.1.1, Network Type POINT_TO_POINT, Cost: 1
+     Transmit Delay is 1 sec, State POINT_TO_POINT
+     Timer intervals configured, Hello 10, Dead 40, Wait 40, Retransmit 5
+       oob-resync timeout 40
+     Supports Link-local Signaling (LLS)
+     Cisco NSF helper support enabled
+     IETF NSF helper support enabled
+     Index 3/3, flood queue length 0
+     Next 0x0(0)/0x0(0)
+     Last flood scan length is 0, maximum is 0
+     Last flood scan time is 0 msec, maximum is 0 msec
+     Neighbor Count is 0, Adjacent neighbor count is 0
+     Suppress hello for 0 neighbor(s)
+
+.. code-block:: shell-session
+
+   R2#sh ip ro os
+        172.16.0.0/24 is subnetted, 3 subnets
+   O       172.16.1.0 [110/74] via 172.16.2.1, 00:01:25, Serial0/0
+        10.0.0.0/24 is subnetted, 2 subnets
+   O       10.1.1.0 [110/65] via 172.16.2.1, 00:01:25, Serial0/0
+   R2#sh ip os int lo0
+   Loopback0 is up, line protocol is up
+     Internet Address 10.2.2.2/24, Area 0
+     Process ID 1, Router ID 10.2.2.2, Network Type POINT_TO_POINT, Cost: 1
+     Transmit Delay is 1 sec, State POINT_TO_POINT
+     Timer intervals configured, Hello 10, Dead 40, Wait 40, Retransmit 5
+       oob-resync timeout 40
+     Supports Link-local Signaling (LLS)
+     Cisco NSF helper support enabled
+     IETF NSF helper support enabled
+     Index 3/3, flood queue length 0
+     Next 0x0(0)/0x0(0)
+     Last flood scan length is 0, maximum is 0
+     Last flood scan time is 0 msec, maximum is 0 msec
+     Neighbor Count is 0, Adjacent neighbor count is 0
+     Suppress hello for 0 neighbor(s)
