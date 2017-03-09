@@ -3321,8 +3321,11 @@ R1
 
 .. image:: img/ospf-stub-area.png
 
-Configuration
+Basic Configuration
 ---------------------------------------
+
+基本的な設定を済ませる。
+ここではまだスタブエリアの実装はおこなわない。
 
 A
 
@@ -3410,7 +3413,6 @@ R3
    !
    ! OSPF configuration
    router ospf 1
-   router-id 3.3.3.3
    network 10.1.0.0 0.0.255.255 area 0
    network 10.2.0.0 0.0.255.255 area 1
    end
@@ -3470,3 +3472,116 @@ PC5
 
    ip 10.2.2.45 255.255.255.0 10.2.2.4
    save
+
+Verify
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+R4 において外部エリアのルートが学習されていることがわかる。
+
+.. code-block:: shell-session
+
+   R4#sh ip ro
+   Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
+          D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+          N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+          E1 - OSPF external type 1, E2 - OSPF external type 2
+          i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+          ia - IS-IS inter area, * - candidate default, U - per-user static route
+          o - ODR, P - periodic downloaded static route
+   
+   Gateway of last resort is not set
+   
+        172.16.0.0/24 is subnetted, 3 subnets
+   O E2    172.16.0.0 [110/20] via 10.2.34.3, 00:01:32, Serial0/0
+   O E2    172.16.1.0 [110/20] via 10.2.34.3, 00:01:32, Serial0/0
+   O E2    172.16.2.0 [110/20] via 10.2.34.3, 00:01:32, Serial0/0
+        10.0.0.0/24 is subnetted, 6 subnets
+   O IA    10.1.12.0 [110/138] via 10.2.34.3, 00:01:37, Serial0/0
+   C       10.2.1.0 is directly connected, FastEthernet0/0
+   C       10.1.2.0 is directly connected, FastEthernet0/1
+   O IA    10.1.1.0 [110/84] via 10.2.34.3, 00:01:37, Serial0/0
+   O IA    10.1.23.0 [110/74] via 10.2.34.3, 00:02:13, Serial0/0
+   C       10.2.34.0 is directly connected, Serial0/0
+
+
+スタブエリアの設定
+---------------------------------------
+
+ではここでスタブエリアの設定をおこなう。
+
+R3(ABR)
+
+.. code-block:: IOS
+
+   conf t
+   router ospf 1
+   area 1 stub
+
+R4（内部ルータ）
+
+.. code-block:: IOS
+
+   conf t
+   router ospf 1
+   area 1 stub
+
+Verify
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+デフォルトルートとして学習されていることを確認。
+
+.. code-block:: shell-session
+
+   R4#sh ip ro
+   Codes: C - connected, S - static, R - RIP, M - mobile, B - BGP
+          D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+          N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+          E1 - OSPF external type 1, E2 - OSPF external type 2
+          i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+          ia - IS-IS inter area, * - candidate default, U - per-user static route
+          o - ODR, P - periodic downloaded static route
+   
+   Gateway of last resort is 10.2.34.3 to network 0.0.0.0
+   
+        10.0.0.0/24 is subnetted, 6 subnets
+   O IA    10.1.12.0 [110/138] via 10.2.34.3, 00:00:03, Serial0/0
+   C       10.2.1.0 is directly connected, FastEthernet0/0
+   C       10.1.2.0 is directly connected, FastEthernet0/1
+   O IA    10.1.1.0 [110/84] via 10.2.34.3, 00:00:03, Serial0/0
+   O IA    10.1.23.0 [110/74] via 10.2.34.3, 00:00:03, Serial0/0
+   C       10.2.34.0 is directly connected, Serial0/0
+   O*IA 0.0.0.0/0 [110/65] via 10.2.34.3, 00:00:03, Serial0/0
+
+LSA タイプ 4, 5 のエントリが無いことを確認する。
+
+.. code-block:: shell-session
+
+   R4#sh ip ospf database
+   
+               OSPF Router with ID (10.2.34.4) (Process ID 1)
+   
+                   Router Link States (Area 1)
+   
+   Link ID         ADV Router      Age         Seq#       Checksum Link count
+   10.2.34.3       10.2.34.3       17          0x80000003 0x009916 2
+   10.2.34.4       10.2.34.4       16          0x80000005 0x00FA63 4
+   
+                   Summary Net Link States (Area 1)
+   
+   Link ID         ADV Router      Age         Seq#       Checksum
+   0.0.0.0         10.2.34.3       35          0x80000001 0x0046C6
+   10.1.1.0        10.2.34.3       35          0x80000002 0x006983
+   10.1.12.0       10.2.34.3       35          0x80000002 0x000E9D
+   10.1.23.0       10.2.34.3       35          0x80000003 0x0010CF
+   R4#ping 172.16.1.10
+   
+   Type escape sequence to abort.
+   Sending 5, 100-byte ICMP Echos to 172.16.1.10, timeout is 2 seconds:
+   !!!!!
+   Success rate is 100 percent (5/5), round-trip min/avg/max = 4/12/28 ms
+
+Conclusion
+--------------------
+
+#. 外部 AS 宛の通信にデフォルトルートを使用する
+#. ABR(R3)はエリア間ルートとしてデフォルトルートを通知する
