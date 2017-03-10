@@ -3657,3 +3657,135 @@ NSSA(Not So Stubby Area)
 .. code-block:: IOS
 
    area <area-id> default-cost <cost>
+
+.. image:: img/ospf-nssa-topology.png
+
+Basic Configuration
+---------------------------------------
+
+基本的な設定を済ませる。
+
+R1
+
+.. code-block:: IOS
+
+   conf t
+   int f0/0
+   ip addr 172.16.1.10 255.255.255.0
+   no shut
+   int f0/1
+   ip addr 172.16.2.10 255.255.255.0
+   no shut
+   int s0/0
+   ip addr 172.16.0.10 255.255.255.0
+   no shut
+   !
+   ! RIPv2 configuration
+   router rip
+   version 2
+   network 172.16.0.0
+   no auto-summary
+   end
+   wr
+
+R2
+
+.. code-block:: IOS
+
+   conf t
+   int s0/1
+   ip addr 172.16.0.1 255.255.255.0
+   no shut
+   int s0/0
+   ip addr 10.1.12.1 255.255.255.0
+   no shut
+   !
+   ! OSPF configuration
+   router ospf 1
+   ! Redistribute RIP Route to OSPF
+   redistribute rip subnets
+   network 10.0.0.0 0.255.255.255 area 0
+   !
+   ! RIPv2 configuration
+   router rip
+   version 2
+   ! Redistribute OSPF Route to RIP
+   redistribute ospf 1 metric 5
+   network 172.16.0.0
+   no auto-summary
+   end
+   wr
+
+R3
+
+.. code-block:: IOS
+
+   conf t
+   int s0/0
+   ip addr 10.1.12.2 255.255.255.0
+   no shut
+   int f0/1
+   ip addr 10.1.1.2 255.255.255.0
+   no shut
+   int f0/0
+   ip addr 10.1.23.2 255.255.255.0
+   no shut
+   !
+   ! OSPF configuration
+   router ospf 1
+   network 10.0.0.0 0.255.255.255 area 0
+   end
+   wr
+
+R4
+
+.. code-block:: IOS
+
+   conf t
+   int f0/0
+   ip addr 10.1.23.3 255.255.255.0
+   no shut
+   int s0/0
+   ip addr 10.2.34.3 255.255.255.0
+   no shut
+   !
+   ! OSPF configuration
+   router ospf 1
+   network 10.1.0.0 0.0.255.255 area 0
+   network 10.2.0.0 0.0.255.255 area 1
+   end
+   wr
+
+R5
+
+.. code-block:: IOS
+
+   conf t
+   int s0/0
+   ip addr 10.2.34.4 255.255.255.0
+   no shut
+   int f0/0
+   ip addr 10.2.1.4 255.255.255.0
+   no shut
+   int f0/1
+   ip addr 10.1.2.4 255.255.255.0
+   no shut
+   !
+   router ospf 1
+   network 10.0.0.0 0.255.255.255 area 1
+   end
+   wr
+
+PC1
+
+.. code-block:: text
+
+   ip 10.0.2.21 255.255.255.0 10.0.2.2
+   save
+
+PC2
+
+.. code-block:: text
+
+   ip 10.1.5.52 255.255.255.0 10.1.5.5
+   save
